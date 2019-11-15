@@ -20,16 +20,16 @@ class TypeController extends Controller
 
         $typelist = Type::select('id','name')->get()->toArray();
 
-        return $typelist;
+        return response()->json($typelist);
     }
 
-    public function getParent()
-    {
+    // public function getParent()
+    // {
 
-        $typelist = Type::select('id','name')->get()->toArray();
+    //     $typelist = Type::select('id','name')->get()->toArray();
 
-        return $typelist;
-    }
+    //     return $typelist;
+    // }
 
 
 
@@ -46,29 +46,30 @@ class TypeController extends Controller
             'name' => 'required|unique:types',
 
 
+        ],[
+            'name.required'=>'名前が必須です。',
+            'name.unique'=>'名前はすでに使用されています。',
         ]);
+
 
         if( $request->parent != null)
         {
-            $type = new Type ([
-                'name' => $request->input('name'),
-                'user_id' => 1,
-                'parent' => $request->parent,
-                'recordstatus' => 2
-            ]);
-
+            $type = new Type();
+            $type->name = $request->input('name');
+            $type->user_id = 1;
+            $type ->parent = $request->parent;
+            $type ->recordstatus = 1;
         }
         else if( $request->parent == null)
         {
-
-            $type = new Type ([
-                'name' => $request->input('name'),
-                'user_id' => 1,
-                'parent' => 0,
-                'recordstatus' => 2
-            ]);
+            $type = new Type();
+            $type->name = $request->input('name');
+            $type->user_id = 1;
+            $type ->parent = 0;
+            $type ->recordstatus = 2;
 
         }
+
         $type->save();
 
         return $type;
@@ -93,8 +94,26 @@ class TypeController extends Controller
         $request->validate([
             'name' => 'required',
         ]);
-        $type = Type::find($id);
-        $type->update($request->all());
+        if($request->parent != null)
+        {
+            $type = Type::find($id);
+            $type->name = $request->input('name');
+            $type->user_id = 1;
+            $type ->parent = $request->parent;
+            $type ->recordstatus = 2;
+            $type->save();
+        }
+        else{
+            $type = Type::find($id);
+            $type->name = $request->input('name');
+            $type->user_id = 1;
+            $type ->parent = 0;
+            $type ->recordstatus = 2;
+            $type->save();
+        }
+
+
+        // $type->update($request->all());
 
         return response()->json('The Type successfully updated');
     }
@@ -103,8 +122,21 @@ class TypeController extends Controller
     {
         $type = Type::find($id);
         $type->delete();
-        return response()->json('The Type was successfully deleted');
+        // return response()->json('The Type was successfully deleted');
+        $types = Type::all()->toArray();
+        return $types;
     }
 
+    public function search(Request $request)
+    {
+    $request = $request->all();
+        $search_word = $request['search_word'];
 
+        $search_categories = Type::query()
+                            ->where('name', 'LIKE', "%{$search_word}%")
+                            ->get()
+                            ->toArray();
+        return $search_categories;
+
+    }
 }

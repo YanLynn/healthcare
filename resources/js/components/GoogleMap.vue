@@ -1,13 +1,44 @@
 <template>
-        <div class="col-md-12 pad-free m-t-15 m-b-20">
-          <h4>Search Your Place Here</h4>
+        <div class="col-md-12 pad-free m-b-10">
+          
               <div class="col-md-12 pad-free">
+                <div class="col-md-12 pad-free postal-search">
+                  <div class="form-group m-t-10">
+                    <label>郵便番号<span class="error">*</span></label>
+                    <input type="text" v-model="comment.postal" name="postal" class="postal form-control white-bg-color" id="postal" v-on:keyup="getPostal" placeholder="郵便番号を入力してください。" maxlength="7"/>
+                    <div id="jsErrorMessage"></div>
+                  </div>
+                  <div class="form-group">
+                    <label>市区町村、番地（建物名）<span class="error">*</span></label>
+                    <div class="row">
+                      <div class="col-md-10" v-if="status === '0'">
+                        <input type="text" id="city" name="city" class="old-city form-control white-bg-color" placeholder="市区町村、番地を入力してください。" v-model="address">                        
+                      </div>
+                      <div class="col-md-10" v-else>
+                        <input type="text" id="city" name="city" class="city form-control white-bg-color" placeholder="市区町村、番地を入力してください。" v-model="comment.city">
+                        
+                      </div>
+                      <div class="col-md-2">
+                        <span class="btn news-post-btn all-btn" @click="searchAddress()">番地検索</span>
+                      </div>
+                    </div>
+                    <p>例）東京都千代田区丸の内1-9-1　グラントウキョウノースタワー40階</p>                                    
+                  </div>
+                </div>           
+
+                <label>場所検索はこちら</label>
                 <gmap-autocomplete
-                  @place_changed="setPlace" class="form-control">
+                  @place_changed="setPlace" v-bind:value="comment.city" class="form-control m-b-10" id="gmap-search" style="display:none;">
+                </gmap-autocomplete>
+                <gmap-autocomplete
+                  @place_changed="setPlace" class="form-control m-b-10 white-bg-color" id="gmap-search2" placeholder="場所を入力してください">
                 </gmap-autocomplete>
                 <!-- <span @click="addMarker">Add</span> -->
-              </div>
-              <br/>
+              </div>              
+              <!-- <div class="col-md-12 pad-free" v-if="address_btn">
+                <label>住所:</label>
+                {{comment.gmap_city}}
+              </div>            -->
           <GmapMap
             id="googlemap"
             ref="map"
@@ -23,8 +54,9 @@
               @click="center=m.position"
               @dragend="updateCoordinates"
             />
+            
           </GmapMap>
-
+          
           <input type="hidden" name="new_lat" v-model="new_lat" id="new_lat">
           <input type="hidden" name="new_long" v-model="new_long" id="new_long">
         </div>
@@ -32,22 +64,40 @@
 <script>
 export default {
   name: "GoogleMap",
+  props:{
+         address:String,
+        },
   data () {
     return {
-      markers: [
-        { position: { lat: 35.6803997, lng: 139.76901739 } }
-      ],
+      status:'0',
+      markers: [],
       addresses: [],
       places: [],
-      center: { lat: 35.6803997, lng: 139.76901739 },
+      center:{},
       selected: '',
       new_lat: '',
-      new_long: ''
+      new_long: '',
+      comment: {
+        postal: '',
+        city: '',
+        gmap_city: ''
+      },
+      address_btn: false,
     }
   },
-  created() {
-    this.new_lat = 35.6803997;
-    this.new_long = 139.76901739;
+  created() { 
+    this.markers = [{
+        position: {
+          lat: Number(localStorage.getItem('lat_num')),
+          lng: Number(localStorage.getItem('lng_num'))
+        }
+      }];
+    this.new_lat = Number(localStorage.getItem('lat_num'));
+    this.new_long = Number(localStorage.getItem('lng_num'));
+
+    this.center = { lat: Number(localStorage.getItem('lat_num')), lng: Number(localStorage.getItem('lng_num')) }
+    
+    $('#gmap-search').css({'display':'none'});
   },
   methods: {    
     // receives a place object via the autocomplete component
@@ -59,8 +109,9 @@ export default {
           lat: this.addresses[e.target.options.selectedIndex].latitude
         }
       });
+     
       // Remove the previous marker
-      this.markers.shift()  
+      this.markers.shift()   
       // Scroll the map to the new position
       this.$refs.map.$mapPromise.then((map) => {
         map.panTo({
@@ -88,6 +139,7 @@ export default {
           lat: this.currentPlace.geometry.location.lat(),
           lng: this.currentPlace.geometry.location.lng()
         };
+        console.log(marker)
         this.markers.push({ position: marker });
         this.places.push(this.currentPlace);
         this.center = marker;
@@ -105,7 +157,51 @@ export default {
           lng: position.coords.longitude
         };
       });
-    }
+    },
+    searchplace(){
+      this.comment.gmap_city = this.comment.city;
+      $('#gmap-search').focus();
+      
+    }, 
+    getPostal: function(event) {
+                this.status = 1;
+                if (this.comment.postal.length > 4) {
+                    var postal = this.comment.postal;
+                    this.axios
+                        .post('/api/hospital/postList/' + postal)
+                        .then(response => {
+                            var post_data = response.data;
+                            var length = response.data.length;
+                            if (length > 0) {
+                                var pref = post_data[0]['city_id'];
+                                if (post_data[0]['street'] == '') {
+                                    this.comment.city = post_data[0]['pref'] + ' - ' +  post_data[0]['city'];
+                                } else {
+                                    this.comment.city = post_data[0]['pref'] + ' - ' + post_data[0]['city'] + ' - ' + post_data[0]['street'];
+                                }
+                                $('#jsErrorMessage').html('<div></div>');
+                            }else {
+                                this.comment.city = '';
+                                $('#jsErrorMessage').html('<div class="error">郵便番号の書式を確認してください。</div>');
+                            }
+                        });
+                }
+            },
+            searchAddress (){
+              this.address_btn = true;
+              if(this.address_btn){
+                // $('#gmap-search').focus();
+                // this.comment.gmap_city = this.comment.city;
+                $('#gmap-search').css({'display':'block'});
+                $('#gmap-search2').css({'display':'none'});
+                $('#gmap-search').focus();
+                
+              }else{
+                this.comment.gmap_city = '';
+              }
+              
+            },
+            
   }
 };
 

@@ -1,128 +1,127 @@
 <template>
-<div>
+    <div>
+        <!-- <adsSlider></adsSlider> -->
         <!--menu tabs-->
-        <ul class="nav nav-tabs card-head-tabs" role="tablist">
-        <li role="presentation" class="active subtab1 nav-item"><a href="#tab1" role="tab" data-toggle="tab" class="nav-link active"><i class="fas fa-newspaper"></i> ニュース</a></li>
-        <li role="presentation" class="subtab2 nav-item"><a href="#tab2" role="tab" data-toggle="tab" class="nav-link"><i class="fas fa-briefcase-medical"></i> 病院検索</a></li>
-        <li role="presentation" class="subtab3 nav-item"><a href="#tab3" role="tab" data-toggle="tab" class="nav-link"><i class="fas fa-user-md"></i> 介護検索</a></li>
-        <li role="presentation" class="subtab5 nav-item"><a href="#tab4" role="tab" data-toggle="tab" class="nav-link"><i class="fas fa-users"></i> 求人検索</a></li>
+        <ul class="nav nav-tabs news-tabColor navtab" id="navtab">
+            <li role="presentation" class="subtab1 nav-item">
+                <router-link  :to="{ name: 'News' }"  class="nav-link"><i class="fas fa-newspaper"></i> ニュース</router-link>
+            </li>
+            <li role="presentation" class="subtab2 nav-item"  >
+                <router-link :to="{ name: 'nursingSearch' }"  class="nav-link"><i class="fas fa-user-md"></i> 介護施設検索</router-link>
+            </li>
+            <li role="presentation" class="subtab3 nav-item"  >
+                <router-link  :to="{ name: 'hospital_search' }"  class="nav-link"><i class="fas fa-briefcase-medical"></i> 病院検索</router-link>
+            </li>
+            <li role="presentation" class="subtab4 nav-item"  >
+                <router-link  :to="{ name: 'jobSearch' }"  class="nav-link"><i class="fas fa-users"></i> 求人検索</router-link>
+            </li>
         </ul>
-        <!--end menu tabs-->
-        <!-- Tab panes -->
-              <div class="tab-content tab-content1 tabs">
-               <div role="tabpanel" class="tab-pane in active" id="tab1">
-                  <News></News>
-                </div>
-                <div role="tabpanel" class="tab-pane fade" id="tab2"><hospitalSearch></hospitalSearch></div>
-                <div role="tabpanel" class="tab-pane fade" id="tab3"><nursingSearch></nursingSearch></div>
-                <div role="tabpanel" class="tab-pane fade" id="tab4"><jobSearch></jobSearch></div>
-              </div>
-            <!--end Tab panes-->
+        
+        <div class="tabs upper-tab" id="upper-tab">
+            <div class="tab-pane" id="tab1">
+                    <main>
+                        <slot />
+                    </main>
+            </div>
         </div>
-        <!-- {{ l_storage_hos_history }} -->
+        <!--end menu tabs-->
+    </div>
+    <!-- {{ l_storage_hos_history }} -->
 </template>
 
-<script>
-import News from './News.vue'
-import hospitalSearch from './hospitalSearch.vue'
-import nursingSearch from './nursingSearch.vue'
-import jobSearch from './jobSearch.vue'
-// import ProfilePublish from './ProfilePublish.vue'
+<style>
+    .hospital-tabColor .nav-link {
+        background: #63b7ff !important;
+        color: #fff;
+        border-right: 1px solid #fff;
+        border-bottom: 0px;
+    }
+    .hospital-tabColor li.subtab3 > .router-link-active{
+        background: #fff!important;
+        color: #63b7ff !important;
+        border-bottom-color: transparent !important;
+        border-top: 3px solid #63b7ff !important;
+        border-bottom: 0px !important;
+        /* border-left: 1px solid #63b7ff !important; */
+    }
+    .hospital-tabColor li.subtab3 > .router-link-exact-active>i.fa, .hospital-tabColor li.subtab3 > .router-link-active>i.fas {
+        color: #63b7ff !important;
+    }
 
-export default {
-    components: {
-     News,
-     hospitalSearch,
-     nursingSearch,
-     jobSearch
-    },
-     mounted() {
-                // console.log[l_storage_hos_history];
-        },
-        data() {
-            return {
-                cats: [],
-                posts: [],
-                latest_post: [],
-                latest_post_all_cats: [],
+    .news-tabColor .nav-link {
+        background: #75b777 !important;
+        color: #fff;
+        border-right: 1px solid #fff;
+        border-bottom: 0px !important;
+    }
+    .news-tabColor li.subtab1 > .router-link-active{
+        background: #fff!important;
+        color: #75b777 !important;
+        border-bottom-color: transparent !important;
+        border-top: 3px solid #75b777 !important;
+        border-left: 1px solid #75b777 !important;
+        border-bottom: 0px !important;
+    }
+    .news-tabColor li.subtab1 > .router-link-exact-active>i.fa, .news-tabColor li.subtab1 > .router-link-active>i.fas {
+        color: #75b777 !important;
+    }
 
-                l_storage_hos_history: [],
-                l_storage_nus_history: [],
-                l_storage_hos_fav: [],
-                l_storage_nus_fav: [],
-            }
-        },
-        created() {
-                // Push data
-                this.l_storage_hos_fav.push(1);
-                this.l_storage_nus_fav.push(1);
-                this.l_storage_hos_history.push(2);
-                this.l_storage_nus_history.push(1);
+    .nursing-tabColor .nav-link {
+        background: #ff9563 !important;
+        color: #fff;
+        border-right: 1px solid #fff;
+        border-bottom: 0px !important;
+    }
+    .nursing-tabColor li.subtab2 > .router-link-active{
+        background: #fff!important;
+        color: #ff9563 !important;
+        border-bottom-color: transparent !important;
+        border-top: 3px solid #ff9563 !important;
+        border-bottom: 0px !important;
+        /* border-left: 1px solid #ff9563 !important; */
+    }
+    .nursing-tabColor li.subtab2 > .router-link-exact-active>i.fa, .nursing-tabColor li.subtab2 > .router-link-active>i.fas {
+        color: #ff9563 !important;
+    }
 
-                this.l_storage_hos_fav.push(2);
-                this.l_storage_nus_fav.push(2);
-                this.l_storage_hos_history.push(1);
-                this.l_storage_nus_history.push(2);
 
-                // Set LocalStorage data
-               localStorage.setItem("hospital_history",this.l_storage_hos_history);
-               localStorage.setItem("nursing_history",this.l_storage_nus_history);
-               localStorage.setItem("hospital_fav",this.l_storage_hos_fav);
-               localStorage.setItem("nursing_fav",this.l_storage_nus_fav);
+    .job-tabColor .nav-link {
+        background: #828282 !important;
+        color: #fff;
+        border-right: 1px solid #fff;
+        border-bottom: 0px !important;
+    }
+    .job-tabColor li.subtab4 > .router-link-active{
+        background: #fff!important;
+        color: #828282 !important;
+        border-bottom-color: transparent !important;
+        border-top: 3px solid #828282 !important;
+        /* border-left: 1px solid #828282 !important; */
+        border-right: 1px solid #828282 !important;
+        border-bottom: 0px !important;
+    }
+    .job-tabColor li.subtab4 > .router-link-exact-active>i.fa, .job-tabColor li.subtab4 > .router-link-active>i.fas {
+        color: #828282 !important;
+    }
 
-        //        localStorage.setItem('name', 'SNY');
-        //        const person = {
-        //                name: "SNY",
-        //                location: "Ygn",
-        //        }
-        //        localStorage.setItem('user', JSON.stringify(person));
+    .job-borderColor {
+        border: 1px solid #828282 !important;
+    }
 
-            this.getAllCat();
-            this.getPostByFirstCat();
-            this.getLatestPostByFirstCatID();
-            this.getLatestPostFromAllCat();
-        },
-        methods: {
-                getAllCat: function() {
-                     this.axios
-                        .get('/home')
-                        .then(response => {
-                                this.cats = response.data;
-                        });
-                },
-                // getPostByFirstCat: function() {
-                //          this.axios.get("/posts/1")
-                //         .then(response => {
-                //                 this.posts = response.data;
-                //         });
-                // },
-                getPostByCatID: function(cat_id) {
-                        this.axios.get("/posts/" + cat_id)
-                        .then(response => {
-                                this.posts = response.data;
-                        });
-                },
-                getLatestPostByFirstCatID: function() {
-                        this.axios.get("/get_latest_post/1")
-                        .then(response => {
-                                this.latest_post = response.data;
-                        });
-                },
-                getLatestPostByCatID: function(cat_id) {
-                        this.axios.get("get_latest_post/" + cat_id)
-                        .then(response => {
-                                this.latest_post = response.data;
-                        });
-                },
-                getLatestPostFromAllCat: function() {
-                        this.axios
-                        .get('/get_latest_post_all_cat')
-                        .then(response => {
-                                this.latest_post_all_cats = response.data;
-                        });
-                },
-        }
+    .news-borderColor {
+        border: 1px solid #75b777 !important;
+    }
 
-}
+    .hospital-borderColor {
+        border: 1px solid #63b7ff !important;
+    }
 
- </script>
+    .nursing-borderColor {
+        border: 1px solid #ff9563 !important;
+    }
+    .tab-pane{
+        padding: 10px;
+    }
+</style>
+
+

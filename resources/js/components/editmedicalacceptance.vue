@@ -23,7 +23,7 @@
                                             </div>
                                             <div class="col-3 pad-free">
                                                 <!-- <a href="categorylist" class="btn btn-warning">Cancel</a> -->
-                                                <router-link to="/medicalacceptancelist" class="btn btn-warning">Cancel</router-link>
+                                                <router-link to="/medicalacceptancelist" class="btn btn-warning">キャンセル</router-link>
                                             </div>
                                         </div>
                                         </form>
@@ -52,7 +52,7 @@ export default {
         },
         created() {
             this.axios
-                .get(`/medical/edit/${this.$route.params.id}`)
+                .get(`/api/medical/edit/${this.$route.params.id}`)
                 .then((response) => {
                     this.medical = response.data;
                    
@@ -62,7 +62,7 @@ export default {
          methods: {
             updatemedical() {
                 this.axios
-                    .post(`/medical/update/${this.$route.params.id}`, this.medical)
+                    .post(`/api/medical/update/${this.$route.params.id}`, this.medical)
                     .then((response) => {
                           alert('Successfully Updated!')
                         this.$router.push({name: 'medicalacceptancelist'});

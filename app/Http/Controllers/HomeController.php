@@ -38,22 +38,30 @@ class HomeController extends Controller
 
     public function getPosts(Request $request)
     {
+     
+    
+
+
         $request = $request->all();
         $cat_id = $request['category_id'];
 
-        $posts = Post::where("category_id",$cat_id);
-        if(isset($request['search_word'])) {
-            $search_word = $request['search_word'];
-            $posts = $posts->where(function($qu) use ($search_word){
-                $qu->where('title', 'LIKE', "%{$search_word}%");
-            });
-        }
-        $posts = $posts->orderBy('created_at', 'desc')->get();
+        $posts = Post::where("category_id",$cat_id)->orderBy('created_at', 'desc')->limit(9)->get();
+        // if(isset($request['search_word'])) {
+        //     $search_word = $request['search_word'];
+        //     $posts = $posts->where(function($qu) use ($search_word){
+        //         $qu->where('title', 'LIKE', "%{$search_word}%");
+        //     });
+        // }
+        // $posts = $posts->orderBy('created_at', 'desc')->get();
         return response()->json($posts);
     }
 
     public function getLatestPost(Request $request)
     {
+
+       
+
+
         // $latest_post = Post::where("category_id",$cat_id)->orderBy('created_at', 'desc')->first();
         $request = $request->all();
         $cat_id = $request['category_id'];
@@ -61,20 +69,63 @@ class HomeController extends Controller
         $latest_post = Post::where("category_id",$cat_id);
         // $search_word = $request['search_word'];
 
-        if(isset($request['search_word'])) {
-            $search_word = $request['search_word'];
-            $latest_post = $latest_post->where(function($qu) use ($search_word){
-                $qu->where('title', 'LIKE', "%{$search_word}%");
-            });
-        }
+        // if(isset($request['search_word'])) {
+        //     $search_word = $request['search_word'];
+        //     $latest_post = $latest_post->where(function($qu) use ($search_word){
+        //         $qu->where('title', 'LIKE', "%{$search_word}%");
+        //     });
+        // }
         $latest_post = $latest_post->orderBy('created_at', 'desc')->first();
         return response()->json($latest_post);
+    }
+
+    public function getCategoryRandom()
+    {
+        // $pattern_arr = [1,2,3,1,2];
+
+        // $random = "SELECT  id, pattern from categories order by rand() limit 5 ";
+        // $cat_random = DB::select($random);
+        // for($i=0;$i<count($cat_random);$i++)
+        // {
+       
+
+        //    $cat_random[$i]->pattern = $pattern_arr[$i];
+             
+        // }
+        // return response()->json($cat_random);
+
+
+        $pattern_arr = [1,2,3];
+        $random = "SELECT  id, pattern from categories order by rand()      ";
+        $cat_random = DB::select($random);
+        $k = count($cat_random);
+        for($i=0;$i<count($cat_random);$i++)
+        { 
+          
+           for($j=0; $j<count($pattern_arr);$j++)
+           {
+               if($i < $k)
+               {        
+                    $cat_random[$i]->pattern = $pattern_arr[$j];
+                    $id = $cat_random[$i]->id;
+                    $category = Category::find($id);
+                    $category->pattern =  $pattern_arr[$j]; 
+                    $category->save(); 
+                    $i++;     
+               }          
+           } 
+     
+           $i--;         
+        }
+       
+
+        return response()->json('success');
     }
 
 
         public function getLatestPostFromAllCat()
     {
-        $latest_post_all_cat = Post::orderBy('created_at', 'desc')->limit('4')->get();
+        $latest_post_all_cat = Post::orderBy('created_at', 'desc')->limit('14')->get();
         return response()->json($latest_post_all_cat);
     }
 
@@ -100,16 +151,39 @@ class HomeController extends Controller
         return $query;
     }
 
-    public function getLatestPostsByAllCatId() {
+    public function getLatestPostsByAllCatId($search_word) {
         // $posts = Category::join('posts', 'categories.id', '=', 'posts.category_id')
         //                 ->selectRaw('GROUP_CONCAT(posts.title order by posts.created_at desc limit 6) as title')
         //                 ->selectRaw('GROUP_CONCAT(posts.photo order by posts.created_at desc limit 6) as photo')
         //                 ->selectRaw('GROUP_CONCAT(posts.id order by posts.created_at desc limit 6) as post_id')
         //                 ->groupBy('categories.id')
         //                 ->get()
-        //                 ->toArray();
-        $sql = "SELECT categories.name,categories.id,posts.id as pid,posts.title,posts.created_at, posts.photo, posts.main_point FROM categories INNER JOIN posts ON categories.id = posts.category_id WHERE posts.created_at > date_sub(now(), interval 1 month) order by posts.created_at desc";
+        //                 ->toArray();    
+        // $posts = Post::selectRaw('GROUP_CONCAT(title) as title')->groupBy('posts.category_id') ->get();    
+        // $posts = Post::select('postid')->get();    
+
+        // $sql = "SELECT id, GROUP_CONCAT(name SEPARATOR ',') FROM customers GROUP BY id";
+        // $sql = "SELECT id, GROUP_CONCAT(name SEPARATOR ',') FROM customers GROUP BY id";
+        
         // $sql = "select c.name , c.id, group_concat(p.title  order by p.created_at desc limit 6) as title, group_concat(p.photo order by p.created_at desc limit 4) as photo ,group_concat(p.id order by p.created_at desc limit 6) as post_id from categories AS c INNER join posts AS p on c.id = p.category_id group by c.id";
+        // $sql = "SELECT categories.name,categories.id,posts.id as pid,posts.title,posts.created_at, posts.photo, posts.main_point FROM categories INNER JOIN posts ON categories.id = posts.category_id order by posts.created_at desc LIMIT 100";
+        // $sql = "SELECT categories.name,categories.id,posts.id as pid,posts.title,posts.created_at, posts.photo, posts.main_point FROM categories INNER JOIN posts ON categories.id = posts.category_id WHERE posts.created_at > date_sub(now(), interval 1 month) order by posts.created_at desc";
+        
+        $sql = "";
+        if($search_word == 'all_news_search'){
+            $wh = '';
+        }
+        else{
+            $wh = " AND (posts.title LIKe '%{$search_word}%' OR posts.main_point LIKe '%{$search_word}%' OR posts.body LIKe '%{$search_word}%')";
+        }
+
+        $cat = Category::select('id')->get();
+        for($i = 0; $i < count($cat); $i++) {
+            $sql.= "(SELECT categories.name,categories.pattern,categories.id,posts.id as pid,posts.title,posts.created_at, posts.photo, posts.main_point FROM categories INNER JOIN posts ON categories.id = posts.category_id WHERE categories.id = ".$cat[$i]['id']." ".$wh." order by posts.created_at desc LIMIT 25) UNION "; 
+        }
+
+        $sql = trim($sql,' UNION ');
+        
         $posts = DB::select($sql);
         return $posts;
     }

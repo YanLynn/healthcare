@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Mail\SendMailable;
 use App\User;
 use DB;
+use Auth;
 class CustomerController extends Controller
 {
     /**
@@ -18,8 +19,10 @@ class CustomerController extends Controller
     public function index()
     {
 
-        $customers = Customer::all()->toArray();
-        return array_reverse($customers);
+        // $customers = Customer::all()->toArray();
+        // return array_reverse($customers);
+        $customer =Customer::orderBy('created_at', 'desc')->get();
+        return response()->json($customer);
     }
 
     public function uploadvideo(Request $request)
@@ -100,6 +103,18 @@ class CustomerController extends Controller
 
     public function edit($id)
     {
+        if($id == 0) {
+            $u_id = auth('api')->user()->id;
+            $id = User::where('id',$u_id)->select('customer_id')->value('customer_id');
+            $type = User::where('id',$u_id)->select('type_id')->value('type_id');
+        }
+        $customer = Customer::find($id);
+        $customer['type_id'] = isset($type)? $type: '';
+
+        return response()->json($customer);
+    }
+
+    public function getCustomerInfo($id) {
         $customer = Customer::find($id);
 
         return response()->json($customer);
@@ -107,6 +122,10 @@ class CustomerController extends Controller
 
     public function update($id,Request $request)
     {
+        if($id == 0) {
+            $u_id = auth('api')->user()->id;
+            $id = User::where('id',$u_id)->select('customer_id')->value('customer_id');
+        }
         $customer = Customer::find($id);
         $customer->update($request->all());
         return response()->json('Customer successfully updated');
@@ -123,40 +142,56 @@ class CustomerController extends Controller
 
     public function confirm($id)
     {
-
+        
         $getCustomer = Customer::findOrFail($id);
-
         $checkUser = User::where('email',$getCustomer->email)->select('email')->value('email');
-
-        if(!empty($checkUser)){
+        // $getUserId = User::where('email',$getCustomer->email)->value('id');
+        $comfirmUser =  auth('api')->user()->id;
+        if(!empty($checkUser)){            
             return response()->json('user is already confirm!');
         }else{
-            $customer = Customer::find($id);
-            $customer->status = 1;
-            $customer->save();
+            \Mail::to($getCustomer)->send(new SendMailable($getCustomer));
+           
             $data = array(
                 'name'=>$getCustomer->name,
                 'email'=>$getCustomer->email,
                 'password'=>$getCustomer->password,
+                'type' => 'user',
+                'type_id' => $getCustomer->type_id,
+                'customer_id' =>$getCustomer->id
             );
             DB::table('users')->insert($data);
-            $id = $id = DB::getPdo()->lastInsertId();
+            $insert = array(
+                'customer_id' => $getCustomer->id
+               );            
+            $lastid = User::where('email',$getCustomer->email)->select('id')->value('id'); //user table last id
             $model_has_roles = array(
                 'role_id'=>2,
                 'model_type'=> 'App\User',
-                'model_id'=> $id,
+                'model_id'=> $lastid,
             );
-            DB::table('model_has_roles')->insert($model_has_roles);
-            \Mail::to($getCustomer)->send(new SendMailable($getCustomer));
-             return response()->json('success');
-        }       
+            if($getCustomer->type_id == 2){                
+                \DB::table('hospital_profiles')->insert($insert);
+            }else{
+                \DB::table('nursing_profiles')->insert($insert);
+            }  
+           DB::table('model_has_roles')->insert($model_has_roles);
+            
+            $cus = Customer::find($id);
+            $cus->status = 1; 
+            $cus->confirm_user_id = $comfirmUser;
+            $cus->user_id = $lastid;
+            $cus->save();
+
+            return response()->json('success');
+        }
     }
 
     public function search(Request $request)
     {
         $request = $request->all();
         $search_word = $request['search_word'];
-        
+
         $search_customer = Customer::query()
                             ->where('name', 'LIKE' , "%{$search_word}%")
                             ->orderBy('id','DESC')
@@ -164,4 +199,6 @@ class CustomerController extends Controller
                             ->toArray();
         return $search_customer;
     }
+
+   
 }

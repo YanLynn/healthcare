@@ -27,7 +27,7 @@ class CategoryController extends Controller
     //      $this->middleware('permission:role-create', ['only' => ['create','store']]);
     //      $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
     //      $this->middleware('permission:role-delete', ['only' => ['destroy']]);
-    // }    
+    // }
 
 
 
@@ -49,19 +49,23 @@ class CategoryController extends Controller
     }
 
     //add category
-    public function store(Request $request)
+    public function add(Request $request)
     {
 
-        $request->validate([
-            'name' => 'required|unique:categories',
+    //     $request->validate([
+    //         'name' => 'required|unique:categories',
 
-        ]);
+    //     ],
+    //     [
+    //         'name.unique' => 'カテゴリ名は一意である必要があります。'
+    //     ]
+    // );
 
-        $category = new Category([
-            'name' => $request->input('name'),
-            'user_id' => 1,
-            'recordstatus' => 2
-        ]);
+        $category = new Category();
+        $category->name = $request->input('name');
+        $category->user_id = 1;
+        $category->recordstatus = 1;
+
         $category ->save();
         return $category;
 
@@ -81,7 +85,11 @@ class CategoryController extends Controller
 
         ]);
         $category = Category::find($id);
-        $category->update($request->all());
+        $category->name = $request->input('name');
+        $category->user_id = 1;
+        $category->recordstatus = 1;
+        $category -> save();
+        // $category->update($request->all());
 
         return response()->json('The Facility successfully updated');
     }
@@ -90,9 +98,11 @@ class CategoryController extends Controller
     {
         $category = Category::find($id);
         $category->delete();
-        return response()->json('The Category successfully deleted');
-        
-        
+        $categories = Category::all()->toArray();
+        // return response()->json(array('categories'=>$categories,'msg'=>'The Category successfully deleted'));
+        return array_reverse($categories);
+
+
     }
     public function create()
 
@@ -100,8 +110,7 @@ class CategoryController extends Controller
         return view('categories.create');
     }
 
-    public function search(Request $request)
-    {
+    public function search(Request $request) {
         $request = $request->all();
         $search_word = $request['search_word'];
 

@@ -14,6 +14,7 @@ use Redirect;
 use App\Type;
 use Session;
 use App\password_reset_view;
+use App\Mail\customerCreateMail;
 class registerController extends Controller
 {
     /**
@@ -21,6 +22,7 @@ class registerController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {   $type = Type::all();
         $cities = DB::table('cities')->get();
@@ -28,39 +30,11 @@ class registerController extends Controller
         return view('register',compact('type','townships','cities'));
     }
 
-    public function getCities()
-    {
-        $cities = DB::table('cities')->get();
-        return response()->json($cities);
-    }
-    public function township(Request $request)
-    {
-        $cities = $request->city;
-        $data = DB::table('townships')->where('city_id',$cities)->get();
-        return response()->json($data);
-    }
-
-   
-
-    public function getTypes(Request $request)
-    {   
-
-       $type = $request->type;
-
-        if($type == '2'){
-            $data = DB::table('types')->select('id','name','user_id','parent')->where('parent',$type)->get();
-            return response()->json($data);
-        }
-        
-       
-       
-    }
-
     public function getTownship()
     {
         $cities = $_GET['cities'];
         $data = DB::table('townships')->select('id','township_name','city_id')->where('city_id',$cities)->get();
-        return response()->json(array('result' => true,'data' => $data),200); 
+        return response()->json(array('result' => true,'data' => $data),200);
     }
     public function getType()
     {
@@ -68,9 +42,7 @@ class registerController extends Controller
         $data = DB::table('types')->select('id','name','user_id','parent')->where('parent',$type)->get();
         return response()->json(array('result' => true,'data' => $data),200);
     }
-
-
-    /** 
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -96,21 +68,27 @@ class registerController extends Controller
             'phone' => 'max:13',
             'password' => 'min:6|required_with:comfirm_password|same:comfirm_password',
             'comfirm_password' => 'min:6',
-            'address' =>'required',
+            //'address' =>'required',
             'cities'=> 'required',
             'township'=> 'required',
             ]);
+            $type = 2;
 
-            if($request->type == null){
-                $type = 1;
-            }else{
-                $type = $request->type;
+            if($request->types == '3'){
+                $type = $request->nursing;
             }
 
-            $destinationPath = public_path('/images');
+            // $destinationPath = public_path('/images');
+
             $image = $request->file('img');
             $getName = time().'.'.$image->getClientOriginalExtension();
-            $image->move($destinationPath, $getName);
+            if($request->types == 2){
+                $image->move('upload/hospital_profile/', $getName);
+            }
+            else{
+                $image->move('upload/nursing_profile/', $getName);
+            }
+            
             // $dbPath = $destinationPath. '/'.$input['img'];
 
             $customer = new Customer;
@@ -120,9 +98,36 @@ class registerController extends Controller
             $customer->phone = $request->phone;
             $customer->type_id = $type;
             $customer->password = bcrypt($request->password);
-            $customer->address = $request->address;
+            // $customer->address = $request->address;
             $customer->townships_id = $request->township;
             $customer->save();
+            if($type == 2){
+                $customer->type = '病院';
+            }
+            elseif($type == 4){
+                $customer->type = '介護  (有料老人ホーム)';
+            }
+            elseif($type == 5){
+                $customer->type = '介護 (デイサービス)';
+            }
+            elseif($type == 6){
+                $customer->type = '介護  (訪問介護・看護)';
+            }
+            $query = "SELECT townships.*, cities.city_name
+                    FROM townships 
+                    JOIN cities
+                    ON cities.id = townships.city_id
+                    WHERE townships.id =" . $customer->townships_id;
+
+            $address = DB::select($query);
+            foreach($address as $ad) {
+                $customer->city_name = $ad->city_name;
+                $customer->township_name = $ad->township_name;
+            }
+
+
+            $admin_email = 'sawnwaiyan2014@gmail.com';
+            \Mail::to($admin_email)->send(new customerCreateMail($customer));
 
             Session::flash('success', "Special message goes here");
             return Redirect::back();
@@ -181,9 +186,9 @@ class registerController extends Controller
         return view('auth.passwordReset');
     }
     public function insertUesr(Request $request)
-    {	
+    {
         $getEmail = $request->email;
-        
+
         $CheckUserEmail = User::where('email',$getEmail)->select('email')->value('email');
         $checkResetEmail = password_reset::where('email',$getEmail)->select('email')->value('email');
         if(!empty($checkResetEmail)){
@@ -193,7 +198,7 @@ class registerController extends Controller
                 $getUserId = User::where('email',$getEmail)->select('id')->value('id');
                 $getCustomerId = Customer::where('email',$getEmail)->select('id')->value('id');
                 $getTime = Carbon\Carbon::now();
-    
+
                 $data = array([
                     'email' => $getEmail,
                     'user_id' => $getUserId,
@@ -202,9 +207,9 @@ class registerController extends Controller
                 ]);
                 DB::table('password_reset')->insert($data);
                 return back()->with('reset','Check Your email for new password. When admin approved,you can use your password');
-    
-    
-    
+
+
+
             }else{
                 return back()->with('reset','Your Email is not register');
             }
@@ -216,11 +221,11 @@ class registerController extends Controller
         $getReset = DB::table('password_reset_view')->get();
         return response()->json($getReset);
     }
-    
+
     public function approve($id)
     {
         $getEmail = password_reset::where('id',$id)->select('email')->value('email');
-        
+
         $password = str_random(6);
         $hashPass = bcrypt($password);
         $updateUser = array(
@@ -230,7 +235,7 @@ class registerController extends Controller
             'password' => $password,
             'status' => 1
         );
-        
+
         $updateCustomer = array(
             'password' => $hashPass
         );
