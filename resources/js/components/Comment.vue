@@ -244,7 +244,7 @@ export default {
             },
             add() {
                   this.$loading(true);
-                  this.axios.post('/api/comments/add', this.comments)
+                  this.axios.post('comments/add', this.comments)
                     .then((response) => {
                         this.$loading(false);
                         this.type="completed";

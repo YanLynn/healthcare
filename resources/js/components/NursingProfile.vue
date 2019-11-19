@@ -711,19 +711,19 @@ export default {
                 this.type = localStorage.getItem('cusType');
                 this.cusid = Number(localStorage.getItem('cusId'));
                 // this.axios
-                // .get('/api/station/'+this.cusid)
+                // .get('station/'+this.cusid)
                 // .then(response=>{
                 //         this.station_list = response.data;
                 // });
 
                 this.axios
-                .get('/api/customerinfo/'+this.cusid)
+                .get('customerinfo/'+this.cusid)
                 .then(response=>{
                         this.customer_info = response.data;   
                 });
 
                 this.axios
-                .get('/api/nursinginfo/'+this.cusid)
+                .get('nursinginfo/'+this.cusid)
                 .then(response=>{
                         this.nursing_info = response.data;
                         
@@ -743,39 +743,39 @@ export default {
                 });
 
                 this.axios
-                .get('/api/staffinfo/'+this.cusid)
+                .get('staffinfo/'+this.cusid)
                 .then(response=>{
                         this.staff_info = response.data;
                 });
 
                 this.axios
-                .get('/api/facilities')
+                .get('facilities')
                 .then(response=>{
                         this.fac_list = response.data;
                 });
 
                 this.axios
-                .get('/api/medical/acceptancewithtransactions/'+this.cusid)
+                .get('medical/acceptancewithtransactions/'+this.cusid)
                 .then(response => {
                         this.medical_acceptance = response.data;
                         console.log(response);
                 });
 
                 this.axios
-                .get('/api/feature/'+this.profile_type+'/'+this.cusid)
+                .get('feature/'+this.profile_type+'/'+this.cusid)
                 .then(response=>{
 
                         this.feature_list = response.data;
                 });
 
                 this.axios
-                .get('/api/nursing-pgallery/'+this.cusid)
+                .get('nursing-pgallery/'+this.cusid)
                 .then(response=>{
                         this.img_arr = response.data;
                 });
 
                 this.axios
-                .get('/api/nursing-panorrama-gallery/'+this.cusid)
+                .get('nursing-panorrama-gallery/'+this.cusid)
                 .then(response=>{
                         this.panorama_arr = response.data;
                         this.panorama_length = this.panorama_arr.length;
@@ -783,19 +783,19 @@ export default {
                 });
 
                 this.axios
-                .get('/api/nursing-vgallery/'+this.cusid)
+                .get('nursing-vgallery/'+this.cusid)
                 .then(response=>{
                         this.video_arr = response.data;
                 });
 
                 this.axios
-                .get('/api/nursing-cooperate/'+this.cusid)
+                .get('nursing-cooperate/'+this.cusid)
                 .then(response=>{
                         this.cooperate_arr = response.data;
                 });
 
                 this.axios
-                .get('/api/nursing-payment/'+this.cusid)
+                .get('nursing-payment/'+this.cusid)
                 .then(response=>{
                         this.payment_arr = response.data;
                 });
@@ -1117,7 +1117,7 @@ export default {
                         fd.append('file' ,file )
                         fd.append('photo' ,file_name )
                         fd.append('type', 'photo')
-                        this.axios.post('/api/nursing/movephoto', fd)
+                        this.axios.post('nursing/movephoto', fd)
                             .then(response => {
                             }).catch(error=>{
                                     console.log(error);
@@ -1150,7 +1150,7 @@ export default {
                 //                         fd.append('file' ,file )
                 //                         fd.append('photo' ,file_name )
                 //                         fd.append('type', 'panorama')
-                //                         this.axios.post('/api/nursing/movephoto', fd)
+                //                         this.axios.post('nursing/movephoto', fd)
                 //                                 .then(response => {
                 //                                 }).catch(error=>{
                 //                                         console.log(error);
@@ -1257,7 +1257,7 @@ export default {
                     fd.append('file' ,file )
                     fd.append('photo' ,file_name )
                     fd.append('type', 'panorama')
-                    this.axios.post('/api/nursing/movephoto', fd)
+                    this.axios.post('nursing/movephoto', fd)
                         .then(response => {
                         }).catch(error=>{
                                 console.log(error);
@@ -1288,7 +1288,7 @@ export default {
                 
 
                 this.axios
-                    .post(`/api/nursing/galleryupdate/${this.cusid}`,{'video':this.video_list, 'image': this.img_list, 'panorama': this.panorama_list})
+                    .post(`nursing/galleryupdate/${this.cusid}`,{'video':this.video_list, 'image': this.img_list, 'panorama': this.panorama_list})
                     .then((response) => {
             
 
@@ -1303,7 +1303,7 @@ export default {
 
                 if(this.cooperate_list.length > 0) {
                     this.axios
-                        .post(`/api/nursing/cooperate/${this.cusid}`,this.cooperate_list)
+                        .post(`nursing/cooperate/${this.cusid}`,this.cooperate_list)
                         .then((response) => {
                             this.name = ''
             
@@ -1320,7 +1320,7 @@ export default {
 
                 if(this.payment_list.length > 0) {
                     this.axios
-                        .post(`/api/nursing/paymentmethod/${this.cusid}`,this.payment_list)
+                        .post(`nursing/paymentmethod/${this.cusid}`,this.payment_list)
                         .then((response) => {
                                     this.name = ''
                 
@@ -1337,7 +1337,7 @@ export default {
 
                 if(this.profile_arr.length > 0) {
                     this.axios
-                        .post(`/api/nursing/profile/${this.cusid}`,this.profile_arr)
+                        .post(`nursing/profile/${this.cusid}`,this.profile_arr)
                         .then((response) => {
                                     this.name = ''
                 
@@ -1355,7 +1355,7 @@ export default {
                 if(this.customer_info_push.length > 0) {
                         // check
                     this.axios
-                        .post(`/api/customer/profile/${this.cusid}`,this.customer_info_push)
+                        .post(`customer/profile/${this.cusid}`,this.customer_info_push)
                         .then((response) => {
                                     
                 
@@ -1372,7 +1372,7 @@ export default {
 
                 if(this.staff_info_push.length > 0) {
                     this.axios
-                        .post(`/api/staff/profile/${this.cusid}`,this.staff_info_push)
+                        .post(`staff/profile/${this.cusid}`,this.staff_info_push)
                         .then((response) => {
                 
                                 console.log(response.data);
@@ -1388,7 +1388,7 @@ export default {
 console.log("acc len - "+acceptance.length)
                 if(acceptance.length > 0) {
                     this.axios
-                        .post(`/api/acceptance/transactions/${this.cusid}`,acceptance)
+                        .post(`acceptance/transactions/${this.cusid}`,acceptance)
                         .then((response) => {
             console.log("acceptance result");
             console.log(response);
@@ -1403,7 +1403,7 @@ console.log("acc len - "+acceptance.length)
 
                 if(this.chek_feature.length > 0) {
                     this.axios
-                    .post(`/api/sfeature/update/${this.cusid}`,this.chek_feature)
+                    .post(`sfeature/update/${this.cusid}`,this.chek_feature)
                     .then((response) => {
 
 

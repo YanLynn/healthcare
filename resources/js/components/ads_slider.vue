@@ -36,7 +36,7 @@ export default {
         }
     },
     created() {
-    this.axios.get("/api/advertisement/ads").then(response => {
+    this.axios.get("advertisement/ads").then(response => {
       this.ads_list = response.data;
     });
   },

@@ -582,7 +582,7 @@
             this.subjectID[0] = 0;
           }
 
-          this.axios.get('api/gethospitalsearch',{
+          this.axios.get('gethospitalsearch',{
             params:{
                 id: this.id,
                 townshipID:this.townshipID,
@@ -666,7 +666,7 @@
           this.id = id;
           
          
-          this.axios.get('api/getmap',{
+          this.axios.get('getmap',{
               params:{
               id: this.id,
               township_id:-1,

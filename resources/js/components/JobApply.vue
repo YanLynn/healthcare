@@ -433,10 +433,10 @@ export default {
   },
   created() {
     this.jobApply.job_id = this.$route.params.job_id;
-    this.axios.get("/api/getskill").then(response => {
+    this.axios.get("getskill").then(response => {
       this.Job.fields = response.data;
     });
-    this.axios.get("/api/hospital/citiesList").then(response => {
+    this.axios.get("hospital/citiesList").then(response => {
       this.city_list = response.data;
     });
   },
@@ -449,7 +449,7 @@ export default {
     getPostal: function(event) {
       if (this.jobApply.postal.length > 4) {
         var postal = this.jobApply.postal;
-        this.axios.post("/api/hospital/postList/" + postal).then(response => {
+        this.axios.post("hospital/postList/" + postal).then(response => {
           var post_data = response.data;
           var length = response.data.length;
           if (length > 0) {
@@ -481,7 +481,7 @@ export default {
 
       // $("#loader").css("display", "block");
       this.axios
-        .post("/api/jobapply", this.jobApply)
+        .post("jobapply", this.jobApply)
         .then(response => {
           // alert("Successful Apply");
           this.$loading(false);

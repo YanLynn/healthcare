@@ -96,7 +96,7 @@ export default {
         },
         created() {
             this.axios
-                .get(`/api/advertisement/edit/${this.$route.params.id}`)
+                .get(`advertisement/edit/${this.$route.params.id}`)
                 .then((response) => {
                      this.advertisement.title = response.data.title;
                      this.advertisement.description = response.data.description;
@@ -183,7 +183,7 @@ export default {
              adsData.append('photo',this.advertisement.photo)
              adsData.append('old_photo',this.old_photo)
             //ads.photo=this.advertisement.photo
-                this.axios.post(`/api/advertisement/update/${this.$route.params.id}`, adsData)
+                this.axios.post(`advertisement/update/${this.$route.params.id}`, adsData)
                     .then((response) => {
                          // alert('Successfully Updated!')
                         this.$swal({

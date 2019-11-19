@@ -61,7 +61,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => { 
-                     this.axios.post("/api/facility/add", this.facility)
+                     this.axios.post("facility/add", this.facility)
                     .then((response) => {
                         this.name = ''
                         this.$swal({

@@ -74,7 +74,7 @@ export default {
     mounted() {
         },
         created() {
-              this.axios.get("/api/get_latest_post_all_cat")
+              this.axios.get("get_latest_post_all_cat")
                 .then(response => {
                     // console.log(response.data);
                         var data = response.data;
@@ -94,23 +94,23 @@ export default {
     var csrf = "{{ csrf_token() }}";
 
     $.ajax({
-        url: '/api/advertisement/ads',
+        url: '/advertisement/ads',
         type: 'GET',
         data: {'_token': csrf},
         success: function( data ) {
             var top_ad = "";
             var side_ad = "";
-            for (var i = 0; i < data.length; i++) {
-                if(data[i].location.includes("topbar") ) {
-                    top_ad += '<div class="list-group-item adslist-card"><a href="/newsdetails/'+data[i].id+'"><div class="slide-img"><img class="img-fluid ads-img" src="/upload/advertisement/' + data[i].photo + '" /></div><h3 class="smallads-title">' + data[i].title + '</h3></a></div>';
-                    if(data[i].location.includes("sidebar")) {
-                        side_ad += '<div><a href="/newsdetails/'+data[i].id+'"><img data-u="image" style="width:100%" src="/upload/advertisement/' + data[i].photo + '" /><div class="side_slider_lbl"><p>' + data[i].title + '</p></div></a></div>';
-                    }
-                } 
-                else if(data[i].location.includes("sidebar"))  {
-                    side_ad += '<div><a href="/newsdetails/'+data[i].id+'"><img data-u="image" style="width:100%" src="/upload/advertisement/' + data[i].photo + '" /><div class="side_slider_lbl"><p>'+ data[i].title +'</p></div></a></div>';
-                }                
-            }
+            // for (var i = 0; i < data.length; i++) {
+            //     if(data[i].location.includes("topbar") ) {
+            //         top_ad += '<div class="list-group-item adslist-card"><a href="/newsdetails/'+data[i].id+'"><div class="slide-img"><img class="img-fluid ads-img" src="/upload/advertisement/' + data[i].photo + '" /></div><h3 class="smallads-title">' + data[i].title + '</h3></a></div>';
+            //         if(data[i].location.includes("sidebar")) {
+            //             side_ad += '<div><a href="/newsdetails/'+data[i].id+'"><img data-u="image" style="width:100%" src="/upload/advertisement/' + data[i].photo + '" /><div class="side_slider_lbl"><p>' + data[i].title + '</p></div></a></div>';
+            //         }
+            //     } 
+            //     else if(data[i].location.includes("sidebar"))  {
+            //         side_ad += '<div><a href="/newsdetails/'+data[i].id+'"><img data-u="image" style="width:100%" src="/upload/advertisement/' + data[i].photo + '" /><div class="side_slider_lbl"><p>'+ data[i].title +'</p></div></a></div>';
+            //     }                
+            // }
             $(".top-ad-slider").html(top_ad);
             $(".side-ad-slider").html(side_ad);
             // jssor_slider2_init();

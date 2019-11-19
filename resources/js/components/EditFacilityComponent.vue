@@ -43,7 +43,7 @@ export default {
   },
   created() {
     this.axios
-      .get(`/api/facility/edit/${this.$route.params.id}`)
+      .get(`facility/edit/${this.$route.params.id}`)
       .then(response => {
         this.facility = response.data;
       });
@@ -66,7 +66,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-          this.axios.post(`/api/facility/update/${this.$route.params.id}`, this.facility).then(response => {
+          this.axios.post(`facility/update/${this.$route.params.id}`, this.facility).then(response => {
           this.description = "";
           this.$swal({
                       position: 'top-end',

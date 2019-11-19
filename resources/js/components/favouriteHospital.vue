@@ -324,7 +324,7 @@
                     },
                     getAllFavourite: function(local_storage) {
                         this.axios
-                            .post('/api/favHospital/' + local_storage)
+                            .post('favHospital/' + local_storage)
                             .then(response => {
                                 console.log(response.data);
                                 this.fav_hospital = response.data;

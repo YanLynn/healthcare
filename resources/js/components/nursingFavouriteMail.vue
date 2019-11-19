@@ -406,7 +406,7 @@ import DatePicker from 'vue2-datepicker';
                 this.comments = this.bk_data;
                 this.selectedValue = this.bk_postal;
             }
-            this.axios.get('/api/hospital/citiesList')
+            this.axios.get('hospital/citiesList')
                 .then(response => {
                     this.city_list = response.data;
                 });
@@ -422,7 +422,7 @@ import DatePicker from 'vue2-datepicker';
                 if (this.comments.postal.length > 4) {
                     var postal = this.comments.postal;
                     this.axios
-                        .post('/api/hospital/postList/' + postal)
+                        .post('hospital/postList/' + postal)
                         .then(response => {
                             var post_data = response.data;
                             var length = response.data.length;

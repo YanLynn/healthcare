@@ -99,7 +99,7 @@
             },
 
             created() {
-                this.axios.get("/api/category/categories").then(response => {
+                this.axios.get("category/categories").then(response => {
                     this.categories = response.data;
                     this.norecord = this.categories.length;
                     if(this.norecord > this.size){
@@ -163,7 +163,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`/api/category/delete/${id}`)
+                                .delete(`category/delete/${id}`)
                                 .then(response => {
                                     this.categories = response.data;
                                     this.norecord = this.categories.length;
@@ -195,7 +195,7 @@
                         var search_word = $("#search-item").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("/api/category/search", fd).then(response => {
+                        this.axios.post("category/search", fd).then(response => {
                             this.categories = response.data;
                         });
                     },

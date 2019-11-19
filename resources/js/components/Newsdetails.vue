@@ -166,7 +166,7 @@ export default {
     //this.getLatestPostFromAllCat();
 
     this.axios
-      .get(`/api/newdetails/${this.$route.params.id}`)
+      .get(`newdetails/${this.$route.params.id}`)
       .then(response => {
         this.newdetails = response.data;
       });
@@ -178,7 +178,7 @@ export default {
     // getLatestPostFromAllCat: function() {
 
     //         this.axios
-    //         .get(`/api/get_latest_post_all_cat`)
+    //         .get(`get_latest_post_all_cat`)
     //         .then(response => {
     //                 //console.log(response);
     //                 //this.latest_post_all_cats = response.data;
@@ -186,11 +186,11 @@ export default {
     // },
     relatedNews: function(pid) {
       // this.axios
-      // .get(`/api/newsdetailsrelated/${id}`).then(response => {
+      // .get(`newsdetailsrelated/${id}`).then(response => {
       //     console.log(response);
       //     this.latest_post_all_cats= response.data;
       // });
-      this.axios.get(`/api/relatednews/${pid}`).then(response => {
+      this.axios.get(`relatednews/${pid}`).then(response => {
         this.latest_post_all_cats = response.data.related_news;
         this.latest_news = response.data.latest_news;
       });

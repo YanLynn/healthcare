@@ -242,7 +242,7 @@
                     // },
                     getAllCustomer: function(local_storage) {
                         this.axios
-                            .post("/api/hospital_history/" + local_storage)
+                            .post("hospital_history/" + local_storage)
                             .then(response => {
                                 console.log(response);
                                 this.hos_profiles = response.data;

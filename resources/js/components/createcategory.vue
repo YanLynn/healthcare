@@ -66,7 +66,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => { 
-                            this.axios.post('/api/category/add', this.category)
+                            this.axios.post('category/add', this.category)
                     .then((response) => {
                         this.name = ''
                         this.$swal({

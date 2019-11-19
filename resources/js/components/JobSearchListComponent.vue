@@ -55,7 +55,7 @@ export default {
             }
         },
         created() {
-               this.axios .get('/api/job/getjob/1') .then(response => {
+               this.axios .get('job/getjob/1') .then(response => {
                         this.jobs = response.data.profilejob;
                 });
            

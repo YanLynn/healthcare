@@ -103,7 +103,7 @@
             },
 
             created() {
-                this.axios.get("/api/feature/featurelist").then(response => {
+                this.axios.get("feature/featurelist").then(response => {
                     this.features = response.data;
                     this.norecord = this.features.length;
                     if(this.norecord > this.size) {
@@ -167,7 +167,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`/api/feature/delete/${id}`)
+                                .delete(`feature/delete/${id}`)
                                 .then(response => {
                                     this.features = response.data;
                                     this.norecord = this.features.length;
@@ -199,7 +199,7 @@
                         var search_word = $("#search-item").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("/api/feature/search", fd).then(response => {
+                        this.axios.post("feature/search", fd).then(response => {
                             this.features = response.data;
                         });
                     },

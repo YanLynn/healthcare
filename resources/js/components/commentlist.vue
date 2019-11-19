@@ -124,7 +124,7 @@
             },
             created() {
                 this.axios
-                    .get('/api/comments/comment')
+                    .get('comments/comment')
                     .then(response => {
                         this.comments = response.data;
                         this.norecord = this.comments.length;
@@ -185,7 +185,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`/api/comments/delete/${id}`)
+                                .delete(`comments/delete/${id}`)
                                 .then(response => {
                                     this.comments = response.data;
                                     this.norecord = this.comments.length;
@@ -225,7 +225,7 @@
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-                            this.axios.get(`/api/comments/confirm/${id}`)
+                            this.axios.get(`comments/confirm/${id}`)
                                 .then(response => {
                                     this.comments = response.data.comments;
                                     this.$swal({
@@ -259,7 +259,7 @@
                         var search_word = $("#search-item").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("/api/comments/search", fd).then(response => {
+                        this.axios.post("comments/search", fd).then(response => {
                             this.comments = response.data;
                         });
                     },

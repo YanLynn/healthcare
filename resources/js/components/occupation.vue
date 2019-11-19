@@ -70,7 +70,7 @@ export default {
 
         created() {
 
-             this.axios.get('/api/occupation/occupationList')
+             this.axios.get('occupation/occupationList')
               .then(function (response) {
                    this.occupationList = response.data;
 
@@ -79,7 +79,7 @@ export default {
 
          mounted() {
              this.axios
-               .get(`/api/occupation/edit/${this.$route.params.id}`)
+               .get(`occupation/edit/${this.$route.params.id}`)
                 .then((response) => {
 
                     if( `${this.$route.params.id}` == "undefined")
@@ -137,7 +137,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                             }).then(response =>{
-                                  this.axios.post('/api/occupation/add', this.occupation)
+                                  this.axios.post('occupation/add', this.occupation)
                         .then(response => {
                             this.name = ''
                             console.log(response);
@@ -192,7 +192,7 @@ export default {
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                    .post(`/api/occupation/update/${this.$route.params.id}`, this.occupation)
+                    .post(`occupation/update/${this.$route.params.id}`, this.occupation)
                     .then(response => {
                         // this.name = ''
                         //   alert('Successfully Updated!')

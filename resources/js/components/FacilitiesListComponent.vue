@@ -88,7 +88,7 @@
                 };
             },
             created() {
-                this.axios.get("/api/facility/facilities").then(response => {
+                this.axios.get("facility/facilities").then(response => {
                     this.facilities = response.data;
                     this.norecord = this.facilities.length;
                     if(this.norecord > this.size){
@@ -152,7 +152,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`/api/facility/delete/${id}`)
+                                .delete(`facility/delete/${id}`)
                                 .then(response => {
                                     this.facilities = response.data;
                                     this.norecord = this.facilities.length;
@@ -184,7 +184,7 @@
                     var search_word = $("#search-item").val();
                     let fd = new FormData();
                     fd.append("search_word", search_word);
-                    this.axios.post("/api/facility/search", fd).then(response => {
+                    this.axios.post("facility/search", fd).then(response => {
                     this.facilities = response.data;
                     });
                 },

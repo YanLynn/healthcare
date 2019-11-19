@@ -284,7 +284,7 @@ export default {
     this.getAllCustomer(this.local_sto);
 
     this.axios
-      .get(`/api/profile/specialfeature/${this.type}`)
+      .get(`profile/specialfeature/${this.type}`)
       .then(response => {
         this.specialfeature = response.data;
       });
@@ -371,7 +371,7 @@ export default {
     getAllCustomer: function(local_storage) {
       this.axios
 
-        .post("/api/nursing_history/" + local_storage)
+        .post("nursing_history/" + local_storage)
 
         .then(response => {
           this.nur_profiles = response.data;

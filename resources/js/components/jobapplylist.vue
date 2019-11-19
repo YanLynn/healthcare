@@ -173,7 +173,7 @@
 
                 if (this.$route.params.id) {
 
-                    this.axios.get(`/api/jobapplylist/` + this.$route.params.id).then(response => {
+                    this.axios.get(`jobapplylist/` + this.$route.params.id).then(response => {
 
                         this.jobapplies = response.data;
                     });

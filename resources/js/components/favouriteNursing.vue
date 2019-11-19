@@ -578,7 +578,7 @@
                     },
                     getAllFavourite: function(local_storage) {
                         this.axios
-                            .post('/api/nursing_fav/' + local_storage)
+                            .post('nursing_fav/' + local_storage)
                             .then(response => {
                                 this.fav_nursing = response.data;
                                 for (var i = 0; i < this.fav_nursing.length; i++) {

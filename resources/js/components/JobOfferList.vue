@@ -185,7 +185,7 @@
                 };
             },
             created() {
-                this.axios.get("/api/job/index").then(response => {
+                this.axios.get("job/index").then(response => {
                     this.jobs = response.data.profilejob;
                     this.customer_id = response.data.user;
                     console.log(this.jobs)
@@ -249,7 +249,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`/api/job/delete/${id}`)
+                                .delete(`job/delete/${id}`)
                                 .then(response => {
                                     let i = this.jobs.map(item => item.id).indexOf(id); // find index of your object
                                     this.jobs.splice(i, 1);
@@ -275,7 +275,7 @@
                         let fd = new FormData();
                         fd.append("search_word", search_word);
                         fd.append("customer_id", customer_id);
-                        this.axios.post("/api/job/search", fd).then(response => {
+                        this.axios.post("job/search", fd).then(response => {
                             this.jobs = response.data;
                         });
                     },

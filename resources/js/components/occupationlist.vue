@@ -97,7 +97,7 @@
             },
             created() {
                 this.axios
-                    .get('/api/occupation/type')
+                    .get('occupation/type')
                     .then(response => {
                         this.occupation = response.data;
                         this.norecord = this.occupation.length;
@@ -163,7 +163,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`/api/occupation/delete/${id}`)
+                                .delete(`occupation/delete/${id}`)
                                 .then(response => {
                                     this.occupation = response.data;
                                     this.norecord = this.occupation.length;
@@ -195,7 +195,7 @@
 
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("/api/occupation/search", fd).then(response => {
+                        this.axios.post("occupation/search", fd).then(response => {
                             this.occupation = response.data;
                         });
                     },

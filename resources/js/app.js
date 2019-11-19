@@ -29,7 +29,7 @@ import Slick from 'vue-slick';
 Vue.use(Slick);
 
 //vue-pannellum
-import VuePannellum from '../../../resources/assets/js/components/vue-pannellum.vue'
+import VuePannellum from '../js/components/vue-pannellum.vue'
 Vue.use(VuePannellum);
 Vue.component('VPannellumn', VuePannellum)
 

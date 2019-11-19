@@ -1,6 +1,7 @@
 <template>
-    <div id="main" class="col-md-10 offset-md-1 main-content pad-free">
 
+    <div id="main" class="col-md-10 offset-md-1 main-content pad-free">
+    <button onclick="topFunction()" id="myBtn">Top</button>
             <HeaderMenu></HeaderMenu>
 
             <div class="sidebar-scroll container-fluid">

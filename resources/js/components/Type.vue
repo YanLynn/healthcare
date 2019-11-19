@@ -76,7 +76,7 @@ export default {
     };
   },
   created() {
-    this.axios.get("/api/types/typelist").then(
+    this.axios.get("types/typelist").then(
       function(response) {
         this.TypeList = response.data;
       }.bind(this)
@@ -85,7 +85,7 @@ export default {
   mounted() {
     if (this.$route.params.id) {
       this.axios
-        .get(`/api/types/edit/${this.$route.params.id}`)
+        .get(`types/edit/${this.$route.params.id}`)
         .then(response => {
           this.Type.name = response.data.name;
           this.Type.parent = response.data.parent;
@@ -120,7 +120,7 @@ export default {
           cancelButtonClass: "all-btn"
         }).then(response => {
           this.axios
-            .post("/api/types/add", this.Type)
+            .post("types/add", this.Type)
             .then(response => {
               this.name = "";
               console.log(response);
@@ -166,7 +166,7 @@ export default {
         cancelButtonClass: "all-btn"
       }).then(response => {
         this.axios
-          .post(`/api/types/update/${this.$route.params.id}`, this.Type)
+          .post(`types/update/${this.$route.params.id}`, this.Type)
           .then(response => {
             this.types = response.data;
             this.norecord = this.types.length;

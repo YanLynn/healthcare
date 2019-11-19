@@ -428,7 +428,7 @@
             },
 
             created() {
-                this.axios.get("/api/job/occupationlist").then(
+                this.axios.get("job/occupationlist").then(
                     function(response) {
                         this.OccupationList = response.data;
                     }.bind(this)
@@ -439,7 +439,7 @@
                 if (this.$route.params.id) {
                     this.axios
 
-                        .get(`/api/job/edit/${this.$route.params.id}`)
+                        .get(`job/edit/${this.$route.params.id}`)
 
                     .then(response => {
                         this.joboffer.title = response.data[0].title;
@@ -499,7 +499,7 @@
                 getPostal: function(event) {
                     if (this.joboffer.postal.length > 4) {
                         var postal = this.joboffer.postal;
-                        this.axios.post("/api/hospital/postList/" + postal).then(response => {
+                        this.axios.post("hospital/postList/" + postal).then(response => {
                             var post_data = response.data;
                             var length = response.data.length;
                             if (length > 0) {
@@ -548,7 +548,7 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .post("/api/job/add", this.joboffer)
+                                .post("job/add", this.joboffer)
 
                             .then(response => {
                                     this.$swal({
@@ -691,7 +691,7 @@
                     }).then(response => {
                         this.axios
 
-                            .post(`/api/job/update/${this.$route.params.id}`, this.joboffer)
+                            .post(`job/update/${this.$route.params.id}`, this.joboffer)
 
                         .then(response => {
                                 this.$swal({

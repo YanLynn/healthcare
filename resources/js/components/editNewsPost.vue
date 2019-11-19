@@ -133,7 +133,7 @@
             },
             created() {
                 this.axios
-                    .get(`/api/new/editPost/${this.$route.params.id}`)
+                    .get(`new/editPost/${this.$route.params.id}`)
                     .then((response) => {
                         this.news = response.data;
                         this.checkedNews = [];
@@ -156,7 +156,7 @@
             },
             mounted() {
                 this.axios
-                    .get(`/api/category/category_list`)
+                    .get(`category/category_list`)
                     .then(function(response) {
                         this.categories = response.data;
                     }.bind(this));
@@ -209,7 +209,7 @@
                         fData.append('related_news', this.checkedNews)
                         fData.append('old_photo',this.old_photo)
 
-                        this.axios.post(`/api/new/update/${this.$route.params.id}`, fData)
+                        this.axios.post(`new/update/${this.$route.params.id}`, fData)
                          this.$swal({
                             position: 'top-end',
                             type: 'success',
@@ -242,7 +242,7 @@
                     getPostsByCatId: function() {
                         var cat_id = this.category_id_1;
                         this.axios
-                        .post('/api/new/getPostsByCatId/' + cat_id)
+                        .post('new/getPostsByCatId/' + cat_id)
                         .then(response => {
                             this.related_news = response.data;
                         });

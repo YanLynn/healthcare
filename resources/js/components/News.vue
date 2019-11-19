@@ -574,7 +574,7 @@
             },
             getAllCat: function() {
                 this.axios
-                    .get('/api/home')
+                    .get('home')
                     .then(response => {
                         // console.log(response);
                         this.cats = response.data;
@@ -599,7 +599,7 @@
                 }
                 // console.log(searchword);
                 this.axios
-                .get('/api/get_latest_posts_by_catId/'+searchword)
+                .get('get_latest_posts_by_catId/'+searchword)
                 .then(response => {
                     // console.log(response);
                     this.post_groups = this.groupBy(response.data, 'name');
@@ -627,7 +627,7 @@
 
                 $('.search-item').css('display', 'none');
                 this.categoryId = cat_id;
-                this.axios.post("/api/posts", fd)
+                this.axios.post("posts", fd)
                     .then(response => {
                         this.posts = response.data;
                     });
@@ -635,7 +635,7 @@
 
             getCategoryRandomValue(){
                  
-            this.axios.get("/api/get_cat_random") .then(response => {
+            this.axios.get("get_cat_random") .then(response => {
                 });          
             },
 
@@ -656,7 +656,7 @@
 
                 $('.search-item').css('display', 'none');
                 this.categoryId = cat_id;
-                this.axios.post("/api/get_latest_post" , fd)
+                this.axios.post("get_latest_post" , fd)
                 .then(response => {
                     this.latest_post = response.data;
                    
@@ -665,7 +665,7 @@
             },
             getLatestPostFromAllCat: function() {
                 this.axios
-                    .get('/api/get_latest_post_all_cat')
+                    .get('get_latest_post_all_cat')
                     .then(response => {
                         this.latest_post_all_cats = response.data;
                     });

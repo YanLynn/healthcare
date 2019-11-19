@@ -95,7 +95,7 @@ export default {
     created(){
 
         this.axios
-            .get('/api/customerinfo/'+this.cusid)
+            .get('customerinfo/'+this.cusid)
             .then(response=>{
                 this.customer_info = response.data;
                 console.log(this.customer_info);
@@ -107,7 +107,7 @@ export default {
                 }
         });
         this.axios
-            .get('/api/user/userinfo/')
+            .get('user/userinfo/')
             .then(response=>{
                 this.user_info = response.data;
         });
@@ -123,7 +123,7 @@ export default {
                 let fd = new FormData();
                     fd.append('file' ,file )
                     fd.append('photo' ,file_name )
-                    this.axios.post('/api/user/movephoto', fd)
+                    this.axios.post('user/movephoto', fd)
                         .then(response => {
                             }).catch(error=>{
                                 console.log(error);
@@ -134,7 +134,7 @@ export default {
                 let arr = new FormData();
                     arr.append('logo',file_name)
                 this.axios
-                    .post(`/api/customer/update/${this.cusid}`,arr)
+                    .post(`customer/update/${this.cusid}`,arr)
                     .then((response) => {
                         alert('Logo is Successfully Updated!');
                     }).catch(error=>{
@@ -161,7 +161,7 @@ export default {
                     arr.append('new_pass',new_pass)
 
                 this.axios
-                    .post(`/api/user/password-change`,arr)
+                    .post(`user/password-change`,arr)
                     .then((response) => {
                         if(response.data == 'oldpasswordwrong') {
                             alert('Please Enter Correct Old Password!');return;
@@ -199,7 +199,7 @@ export default {
                 cancelButtonClass: "all-btn"
             }).then(response=>{
                 this.axios
-                .post(`/api/user/email-change`,arr)
+                .post(`user/email-change`,arr)
                 .then(response => {
                     alert('Email is Successfully Changed!');
                     }).catch(error=>{

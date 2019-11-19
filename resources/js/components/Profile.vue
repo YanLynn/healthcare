@@ -111,7 +111,7 @@ export default {
     };
   },
   created() {
-    this.axios.get('/api/user').then(response => {
+    this.axios.get('user').then(response => {
         this.pro_id = response.data.lat_lng[0].id;
         this.loginuser = true;
        console.log(response.data)
@@ -147,7 +147,7 @@ export default {
         this.type = localStorage.getItem("cusType");
         this.cusid = Number(localStorage.getItem("cusId"));
         
-        this.axios.get(`/api/profile_view/${this.cusid}/${this.type}`).then(response => {
+        this.axios.get(`profile_view/${this.cusid}/${this.type}`).then(response => {
             console.log(response)
             this.pro_id = response.data[0].pro_id;
             localStorage.setItem("lat_num", response.data[0].latitude);

@@ -97,7 +97,7 @@
                 };
             },
             created() {
-                this.axios.get("/api/advertisement/ads").then(response => {
+                this.axios.get("advertisement/ads").then(response => {
                     this.advertisements = response.data;
                     this.norecord = this.advertisements.length;
                     if(this.norecord > this.size){
@@ -163,7 +163,7 @@
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-                            this.axios.delete(`/api/advertisement/delete/${id}`).then(response => {
+                            this.axios.delete(`advertisement/delete/${id}`).then(response => {
                                 this.advertisements = response.data;
                                 this.norecord = this.advertisements.length;
                                 if(this.norecord > this.size){
@@ -192,7 +192,7 @@
                         var search_word = $("#search-item").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("/api/advertisement/search", fd).then(response => {
+                        this.axios.post("advertisement/search", fd).then(response => {
                             this.advertisements = response.data;
                         });
                     },

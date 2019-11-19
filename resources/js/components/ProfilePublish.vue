@@ -1325,7 +1325,7 @@
 
 
 import joboffer from './JobSearchListComponent.vue'
-import Pannellum from '../../../../resources/assets/js/components/vue-pannellum.vue'
+import Pannellum from '../../js/components/vue-pannellum.vue'
 import Lightbox from 'vue-my-photos'
 export default {
 
@@ -1465,12 +1465,12 @@ export default {
             }
             if(this.type == "nursing")
             {
-                this.axios.get('/api/profile/customer/'+this.cusid+'/'+this.type) .then(response => {
+                this.axios.get('profile/customer/'+this.cusid+'/'+this.type) .then(response => {
                       this.customer = response.data;
                       this.customer_name = response.data[0].name;
                 });
 
-                this.axios.get('/api/profile/nursing/'+this.cusid) .then(response => {
+                this.axios.get('profile/nursing/'+this.cusid) .then(response => {
                     this.nursing_profiles = response.data.feature;
 
                     this.nus_method= response.data.method;
@@ -1529,12 +1529,12 @@ export default {
 
 
 
-                this.axios.get(`/api/profile/specialfeature/${this.type}/${this.cusid}`) .then(response => {
+                this.axios.get(`profile/specialfeature/${this.type}/${this.cusid}`) .then(response => {
                     this.specialfeature = response.data;
 
                 });
 
-                  this.axios.get('/api/profile/comment/'+this.cusid) .then(response => {
+                  this.axios.get('profile/comment/'+this.cusid) .then(response => {
                     
                       this.comments = response.data;
                     // for ( var index=0; index<response.data.length; index++ ) {
@@ -1548,11 +1548,11 @@ export default {
             }
 
             else{
-                this.axios.get('/api/profile/customer/'+this.cusid+'/'+this.type).then(response => {
+                this.axios.get('profile/customer/'+this.cusid+'/'+this.type).then(response => {
                     this.customer = response.data;
                     this.customer_name = response.data[0].name;
                 });
-                this.axios.get('/api/profile/hospital/'+this.cusid).then(response => {
+                this.axios.get('profile/hospital/'+this.cusid).then(response => {
                     this.google = response.data.hoslatlong;
 
                     this.hospitals = response.data.hospital;
@@ -1600,24 +1600,24 @@ export default {
 
                 });
 
-                this.axios.get(`/api/profile/specialfeature/${this.type}/${this.cusid}`).then(response => {
+                this.axios.get(`profile/specialfeature/${this.type}/${this.cusid}`).then(response => {
 
                     this.specialfeature = response.data;
 
                 });
 
-                 this.axios.get('/api/profile/comment/'+this.cusid).then(response => {
+                 this.axios.get('profile/comment/'+this.cusid).then(response => {
 
                       this.comments = response.data;
 
                 });                 
 
-                this.axios.get('/api/profile/subject/'+this.cusid).then(response => {
+                this.axios.get('profile/subject/'+this.cusid).then(response => {
                       this.subjects = response.data;
 
                 });
 
-                 this.axios.get('/api/profile/schedule/'+this.cusid) .then(response => {
+                 this.axios.get('profile/schedule/'+this.cusid) .then(response => {
 
                         this.am_arr = response.data.am;
                         this.pm_arr = response.data.pm;

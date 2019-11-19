@@ -127,7 +127,7 @@
             };
         },
         created() {
-            this.axios.get("/api/news_list").then(response => {
+            this.axios.get("news_list").then(response => {
                 this.news_list = response.data;
                 this.norecord = this.news_list.length;
                 if(this.norecord > this.size){
@@ -139,7 +139,7 @@
             });
         },
         mounted() {
-            this.axios.get("/api/category/category_list").then(
+            this.axios.get("category/category_list").then(
                 function(response) {
                     this.categories = response.data;
                 }.bind(this)
@@ -202,7 +202,7 @@
                         cancelButtonClass: "all-btn"
                     }).then(response => {
                         this.axios
-                            .delete(`/api/new/delete/${id}`)
+                            .delete(`new/delete/${id}`)
                             .then(response => {
                                 this.news_list = response.data;
                                 this.norecord = this.news_list.length;
@@ -235,7 +235,7 @@
                     let fd = new FormData();
                     fd.append("search_word", search_word);
                     fd.append("selected_category", selected_category);
-                    this.axios.post("/api/news_list/search", fd).then(response => {
+                    this.axios.post("news_list/search", fd).then(response => {
                         this.news_list = response.data;
                     });
                 },

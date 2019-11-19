@@ -44,7 +44,7 @@ export default {
 
          methods: {
             add() {
-                this.axios.post('/api/station/add', this.station)
+                this.axios.post('station/add', this.station)
                     .then((response) => {
                         this.name = ''
                         this.$swal({

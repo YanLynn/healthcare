@@ -555,7 +555,7 @@ export default {
           this.empstatus[0] = 0;
         }
 
-        this.axios.get('api/getjobsearch',{
+        this.axios.get('getjobsearch',{
           
           params:{
               id: this.id,
@@ -636,7 +636,7 @@ export default {
           // const id = e.target.id;
           // this.id = id;
 
-          this.axios.get('api/getmap',{
+          this.axios.get('getmap',{
             params:{
               id: this.id,
               township_id:-1,

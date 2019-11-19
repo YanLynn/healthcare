@@ -84,7 +84,7 @@ export default {
                 //  this.title = this.title.toUpperCase();
 
                   this.axios
-                    .get(`/api/feature/edit/${this.$route.params.id}`)
+                    .get(`feature/edit/${this.$route.params.id}`)
                     .then((response) => {
 
                     this.feature= response.data;
@@ -163,7 +163,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                             }).then(response =>{
-                                   axios.post('/api/feature/add', this.feature)
+                                   axios.post('feature/add', this.feature)
                         .then(response => {
                             this.name = ''
                             console.log(response);
@@ -220,7 +220,7 @@ export default {
                             cancelButtonClass: "all-btn"
                         }).then(response => { 
                              this.axios
-                .post(`/api/feature/update/${this.$route.params.id}`, this.feature)
+                .post(`feature/update/${this.$route.params.id}`, this.feature)
                 .then((response) => {
 
                

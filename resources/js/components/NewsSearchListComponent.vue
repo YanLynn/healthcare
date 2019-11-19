@@ -69,7 +69,7 @@ export default {
         created() {
             var  search_word = $('#search-word').val();
             this.axios
-                .post('/api/news/search/'+search_word)
+                .post('news/search/'+search_word)
                 .then(response=>{
                     this.post_groups = this.groupBy(response.data, 'name');                       
                 });
@@ -102,7 +102,7 @@ export default {
             this.search_word = search;
 
             this.axios
-                .post('/api/news/search/'+this.search_word)
+                .post('news/search/'+this.search_word)
                 .then(response=>{
                 this.post_groups = this.groupBy(response.data, 'name');
                 });

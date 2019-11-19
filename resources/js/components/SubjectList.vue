@@ -96,7 +96,7 @@
             },
             created() {
                 this.axios
-                    .get('/api/subjects/subject')
+                    .get('subjects/subject')
                     .then(response => {
                         this.subjects = response.data;
                         this.norecord = this.subjects.length;
@@ -160,7 +160,7 @@
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-                            this.axios.delete(`/api/subjects/delete/${id}`)
+                            this.axios.delete(`subjects/delete/${id}`)
                                 .then(response => {
                                     this.subjects = response.data;
                                     this.norecord = this.subjects.length;
@@ -190,7 +190,7 @@
 
                         let fd = new FormData();
                         fd.append("search_word", search_word)
-                        this.axios.post("/api/subjects/search", fd).then(response => {
+                        this.axios.post("subjects/search", fd).then(response => {
                             this.subjects = response.data;
                         });
                     },

@@ -125,7 +125,7 @@
                 };
             },
             created() {
-                this.axios.get("/api/customers").then(response => {
+                this.axios.get("customers").then(response => {
                     this.customers = response.data;
                     if(this.customers.length > this.size){
                         this.pagination = true;
@@ -187,7 +187,7 @@
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-                            this.axios.delete(`/api/customer/delete/${id}`).then(response => {                                
+                            this.axios.delete(`customer/delete/${id}`).then(response => {                                
                                 this.$swal({
                                     title: "削除された",
                                     text: "ファイルが削除されました。",
@@ -210,7 +210,7 @@
                     },
                     comfirm(id) {
                         this.$loading(true);
-                        this.axios.get(`/api/confirm/${id}`).then(response => {
+                        this.axios.get(`confirm/${id}`).then(response => {
                             console.log(response);
                             this.$swal({
                                 title: "確認済",
@@ -230,7 +230,7 @@
                         var search_word = $("#search-word").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("/api/customer/search", fd).then(response => {
+                        this.axios.post("customer/search", fd).then(response => {
                             this.customers = response.data;
                         });
                     },

@@ -142,7 +142,7 @@
                 }
             },
             created() {
-                this.axios.get('/api/category/category_list')
+                this.axios.get('category/category_list')
                     .then(function(response) {
                         this.categories = response.data;
                     }.bind(this));
@@ -187,7 +187,7 @@
                         fData.append('body', this.news.body)
                         fData.append('category_id', this.news.category_id)
                         fData.append('related_news', this.checkedNews)
-                        this.axios.post('/api/new/add', fData)
+                        this.axios.post('new/add', fData)
                             .then(response => {
                             this.name = ''
                             console.log(response);
@@ -228,7 +228,7 @@
                         let fd = new FormData();
                         fd.append("search_word", search_word);
                         fd.append("selected_category", cat_id);
-                        this.axios.post("/api/news_list/search", fd).then(response => {
+                        this.axios.post("news_list/search", fd).then(response => {
                             this.related_news = response.data;
                         });
                         this.search_word = '1';

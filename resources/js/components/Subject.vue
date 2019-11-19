@@ -65,7 +65,7 @@ export default {
         },
          created() {
 
-             this.axios.get('/api/subjects/subjectlist')
+             this.axios.get('subjects/subjectlist')
               .then(function (response) {
                    this.SubjectList = response.data;
                    console.log(this.SubjectList);
@@ -78,7 +78,7 @@ export default {
             {
 
                 this.axios
-               .get(`/api/subjects/edit/${this.$route.params.id}`)
+               .get(`subjects/edit/${this.$route.params.id}`)
                 .then((response) => {
                         this.Subject.name = response.data.name;
                         this.Subject.parent = response.data.parent;
@@ -129,7 +129,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                             }).then(response =>{
-                                   this.axios.post('/api/subjects/add', this.Subject)
+                                   this.axios.post('subjects/add', this.Subject)
                         .then(response => {
                             this.name = ''
                             console.log(response);

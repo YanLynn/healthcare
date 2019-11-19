@@ -46,7 +46,7 @@ export default {
   },
   created() {
     this.axios
-      .get(`/api/category/edit/${this.$route.params.id}`)
+      .get(`category/edit/${this.$route.params.id}`)
       .then(response => {
         this.category = response.data;
       });
@@ -69,7 +69,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => { 
-                     this.axios.post(`/api/category/update/${this.$route.params.id}`, this.category)
+                     this.axios.post(`category/update/${this.$route.params.id}`, this.category)
                     .then((response) => {
                         this.name = ''
                         this.$swal({

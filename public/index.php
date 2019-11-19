@@ -59,8 +59,8 @@ $response->send();
 
 $kernel->terminate($request, $response);
 $allowedOrigins = array(
-    '(http(s)://)?(www\.)?localhost:8000\.com', // Laravel API Domain
-    'http://localhost:8000' // VueJS CLient
+    '(http(s)://)?(www\.)?192.168.10.17:8000\.com', // Laravel API Domain
+    'http://192.168.10.17:8000' // VueJS CLient
  );
  if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] != '') {
     foreach ($allowedOrigins as $allowedOrigin) {

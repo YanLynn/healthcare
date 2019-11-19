@@ -52,7 +52,7 @@ export default {
        
          methods: {
            add() {
-               this.axios.post('/api/medical/add', this.medical)
+               this.axios.post('medical/add', this.medical)
                     .then((response) => {
                     alert('Successfully Created')
                      this.$router.push({name: 'medicalacceptancelist'});

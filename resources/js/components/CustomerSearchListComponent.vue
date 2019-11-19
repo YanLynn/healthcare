@@ -53,7 +53,7 @@ export default {
         methods: {
                 getAllCustomer: function() {
                      this.axios
-                        .get('/api/customers')
+                        .get('customers')
                         .then(response => {
                                 this.customers = response.data;
                         });
