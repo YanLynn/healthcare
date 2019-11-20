@@ -47,8 +47,8 @@ export default {
   methods: {
     add() {
      this.$swal({
-                            title: "作成",
-                            text: "作成よろしでしょうか。",
+                            title: "確認",
+                            text: "作成よろしいでしょうか。",
                             type: "success",
                             width: 350,
                             height: 200,
@@ -61,7 +61,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => { 
-                     this.axios.post("facility/add", this.facility)
+                     this.axios.post("/facility/add", this.facility)
                     .then((response) => {
                         this.name = ''
                         this.$swal({

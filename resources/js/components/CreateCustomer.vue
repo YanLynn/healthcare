@@ -97,7 +97,7 @@ export default {
                  fd.append('address',this.customer.address)
 
 
-                 this.axios.post('customer/add', fd )
+                 this.axios.post('/customer/add', fd )
                     .then((response) => {
                     alert('Successfully Created')
                      this.$router.push({name: '/'});

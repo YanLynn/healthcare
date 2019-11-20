@@ -91,7 +91,7 @@
                             <!-- <span class="job_id">jobapplylistcount{{job.count}}</span> -->
                             <span class="text-orange"><span class="job_count">{{job.count}}件</span></span>
 
-                            <span class="job_id">求人番号：{{job.job_number}}</span>
+                            <span class="job_id">求人番号：{{job.jobid}}</span>
                         </h5>
                                         </div>
 
@@ -138,7 +138,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="offset-md-4 col-md-8 mt-3">
+                        <div class="offset-md-4 col-md-8 mt-3" v-if="pagination">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -182,13 +182,19 @@
                     size: 10,
                     pageRange: 5,
                     items: [],
+                    pagination: false
                 };
             },
             created() {
-                this.axios.get("job/index").then(response => {
+                this.axios.get("/job/index").then(response => {
+                    console.log(response.data);
                     this.jobs = response.data.profilejob;
                     this.customer_id = response.data.user;
-                    console.log(this.jobs)
+                    if (this.jobs.length > this.size) {
+                    this.pagination = true;
+                    } else {
+                        this.pagination = false;
+                    }
 
                 });
 
@@ -249,13 +255,13 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`job/delete/${id}`)
+                                .delete(`/job/delete/${id}`)
                                 .then(response => {
                                     let i = this.jobs.map(item => item.id).indexOf(id); // find index of your object
                                     this.jobs.splice(i, 1);
                                     this.$swal({
-                                        title: "削除された",
-                                        text: "ファイルが削除されました。",
+                                        title: "削除済",
+                                        text: "仕事を削除されました。",
                                         type: "success",
                                         width: 350,
                                         height: 200,
@@ -275,8 +281,13 @@
                         let fd = new FormData();
                         fd.append("search_word", search_word);
                         fd.append("customer_id", customer_id);
-                        this.axios.post("job/search", fd).then(response => {
+                        this.axios.post("/job/search", fd).then(response => {
                             this.jobs = response.data;
+                            if (this.jobs.length > this.size) {
+                            this.pagination = true;
+                            } else {
+                                this.pagination = false;
+                            }
                         });
                     },
                 first() {

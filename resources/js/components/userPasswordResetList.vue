@@ -55,7 +55,7 @@
         },
         created() {
             this.axios
-                .get('getReset')
+                .get('/getReset')
                 .then(response => {
                     this.getReset = response.data;
                     //console.log(response.data);
@@ -63,7 +63,7 @@
         },
         methods: {
             approve(id){
-                this.axios.get(`approve/${id}`)
+                this.axios.get(`/approve/${id}`)
                 .then(response=>{
                     ajax.reload();
                 })

@@ -31,30 +31,34 @@
                         </div>
                         <hr />
                         <h5 class="header">広告一覧</h5>
-                        <div v-for="ads in displayItems" :key="ads.id" class="card card-default m-b-20">
-                            <div class="card-body news-post">
-                                <div class="row">
-                                    <div class="col-md-2">
-                                        <img :src="'/upload/advertisement/'+ ads.photo" class="img-fluid" alt="ads" @error="imgUrlAlt" />
-                                    </div>
-                                    <div class="row col-md-10">
-                                        <div class="col-md-2 max-width16">
-                                            <strong>タイトル :</strong>
+                        <div v-if="!this.advertisements.length" class="container-fuid no_search_data">検索したデータ見つかりません。</div>
+                        <div v-else class="container-fuid">
+                            <div v-for="ads in displayItems" :key="ads.id" class="card card-default m-b-20">
+                                <div class="card-body news-post">
+                                    <div class="row">
+                                        <div class="col-md-2">
+                                            <img :src="'/upload/advertisement/'+ ads.photo" class="img-fluid" alt="ads" @error="imgUrlAlt" />
                                         </div>
-                                        <div class="col-md-10">{{ads.title}}</div>
-                                        <!-- <div class="col-md-2 max-width16"><strong>描写  :</strong></div><div class="col-md-10">{{ads.description}}</div> -->
+                                        <div class="row col-md-10">
+                                            <div class="col-md-2 max-width16">
+                                                <strong>タイトル :</strong>
+                                            </div>
+                                            <div class="col-md-10">{{ads.title}}</div>
+                                            <!-- <div class="col-md-2 max-width16"><strong>描写  :</strong></div><div class="col-md-10">{{ads.description}}</div> -->
 
-                                        <div class="row col-12 mt-2">
-                                            <div class="col-4 col-offset-4 pl-3">
-                                                <router-link :to="{name: 'editadvertisement', params: { id: ads.id }}" class="btn edit-borderbtn">編集</router-link>
-                                                <button class="btn delete-borderbtn" @click="deleteAds(ads.id)">削除</button>
-                                                <!-- <button class="btn delete-borderbtn" @click="toggleModal">削除</button>                                 -->
+                                            <div class="row col-12 mt-2">
+                                                <div class="col-4 col-offset-4 pl-3">
+                                                    <router-link :to="{name: 'editadvertisement', params: { id: ads.id }}" class="btn edit-borderbtn">編集</router-link>
+                                                    <button class="btn delete-borderbtn" @click="deleteAds(ads.id)">削除</button>
+                                                    <!-- <button class="btn delete-borderbtn" @click="toggleModal">削除</button>                                 -->
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    
                         <div class="offset-md-4 col-md-8 mt-3" v-if="pagination">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
@@ -93,11 +97,11 @@
                     size: 10,
                     pageRange: 5,
                     items: [],
-                    pagination: false
+                    pagination: false,
                 };
             },
             created() {
-                this.axios.get("advertisement/ads").then(response => {
+                this.axios.get("/advertisement/ads").then(response => {
                     this.advertisements = response.data;
                     this.norecord = this.advertisements.length;
                     if(this.norecord > this.size){
@@ -163,7 +167,7 @@
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-                            this.axios.delete(`advertisement/delete/${id}`).then(response => {
+                            this.axios.delete(`/advertisement/delete/${id}`).then(response => {
                                 this.advertisements = response.data;
                                 this.norecord = this.advertisements.length;
                                 if(this.norecord > this.size){
@@ -192,8 +196,13 @@
                         var search_word = $("#search-item").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("advertisement/search", fd).then(response => {
+                        this.axios.post("/advertisement/search", fd).then(response => {
                             this.advertisements = response.data;
+                            if(this.advertisements.length > this.size){
+                                this.pagination = true;
+                            }else{
+                                this.pagination = false;
+                            }
                         });
                     },
                     imgUrlAlt(event) {

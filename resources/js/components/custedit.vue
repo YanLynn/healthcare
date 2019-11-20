@@ -58,7 +58,7 @@ export default {
     },
     created(){
         this.axios
-                .get(`customer/edit/${this.$route.params.id}`)
+                .get(`/customer/edit/${this.$route.params.id}`)
                 .then((response) => {
                     this.customer = response.data;
 
@@ -67,7 +67,7 @@ export default {
      methods:{
         CustomerUpdate() {
                 this.axios
-                    .post(`customer/update/${this.$route.params.id}`, this.customer)
+                    .post(`/customer/update/${this.$route.params.id}`, this.customer)
                     .then((response) => {
                           alert('Successfully Updated!')
                         this.$router.push({name: 'customerlist'});

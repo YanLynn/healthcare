@@ -15,15 +15,7 @@
                                 <div class="container-fluid main-wrapper">
                                     <!--slider for ads-->
                                     <div class="col-md-auto pad-free">
-                                       <!--jssor carousel-->
-                                        <div id="jssor_1" class="jssor-slider">
-                                            <!-- Loading Screen -->
-                                            <div data-u="loading" class="jssorl-009-spin">
-                                                <img  src="images/spin.svg" />
-                                            </div>
-                                            <div data-u="slides"  class="top-ad-slider"> </div>         
-                                        </div>
-                                            <!--end jssor slider-->
+                                      
                                     </div>
                                         <!--end slider for ads-->
                                     <div class="row justify-content-md-center">
@@ -75,15 +67,9 @@
                                 <div class="container-fluid main-wrapper">
                                     <!--slider for ads-->
                                     <div class="col-md-auto pad-free">
-                                       <!--jssor carousel-->
-                                        <div id="jssor_1" class="jssor-slider">
-                                            <!-- Loading Screen -->
-                                            <div data-u="loading" class="jssorl-009-spin">
-                                                <img  src="images/spin.svg" />
-                                            </div>
-                                            <div data-u="slides"  class="top-ad-slider"> </div>         
-                                        </div>
-                                            <!--end jssor slider-->
+                                    <div class="row col-md-12 pad-free fixed-ads-fluid" style="hight:200px">
+                                            <ads_slider></ads_slider>
+                                    </div>
                                     </div>
                                         <!--end slider for ads-->
                                     <div class="row justify-content-md-center">
@@ -140,13 +126,14 @@
   export default {
     data() {
       return {
-        //
+
       }
     },
     components: {
       HeaderMenu,
       asideMenu
-    }
+    },
+   
   }
 </script>
 

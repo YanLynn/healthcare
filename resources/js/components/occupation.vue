@@ -70,7 +70,7 @@ export default {
 
         created() {
 
-             this.axios.get('occupation/occupationList')
+             this.axios.get('/occupation/occupationList')
               .then(function (response) {
                    this.occupationList = response.data;
 
@@ -79,7 +79,7 @@ export default {
 
          mounted() {
              this.axios
-               .get(`occupation/edit/${this.$route.params.id}`)
+               .get(`/occupation/edit/${this.$route.params.id}`)
                 .then((response) => {
 
                     if( `${this.$route.params.id}` == "undefined")
@@ -123,8 +123,8 @@ export default {
                           if( `${this.$route.params.id}` == "undefined")
                 {
                     this.$swal({
-                                title: "作成",
-                            text: "作成よろしでしょうか。",
+                             title: "確認",
+                            text: "作成よろしいでしょうか。",
                             type: "success",
                             width: 350,
                             height: 200,
@@ -137,7 +137,7 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                             }).then(response =>{
-                                  this.axios.post('occupation/add', this.occupation)
+                                  this.axios.post('/occupation/add', this.occupation)
                         .then(response => {
                             this.name = ''
                             console.log(response);
@@ -178,7 +178,7 @@ export default {
               updateType() {
                   this.$swal({
                             title: "確認",
-                            text: "更新よろしでしょうか。",
+                            text: "更新よろしいでしょうか。",
                             type: "info",
                             width: 350,
                             height: 200,
@@ -192,7 +192,7 @@ export default {
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                    .post(`occupation/update/${this.$route.params.id}`, this.occupation)
+                    .post(`/occupation/update/${this.$route.params.id}`, this.occupation)
                     .then(response => {
                         // this.name = ''
                         //   alert('Successfully Updated!')

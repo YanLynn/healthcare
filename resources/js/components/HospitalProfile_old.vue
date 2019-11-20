@@ -217,7 +217,7 @@ export default {
         },
         created(){
                 this.axios
-                .get('facilities')
+                .get('/facilities')
                 .then(response=>{
                 this.fac_list = response.data;
                 });

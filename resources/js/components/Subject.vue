@@ -65,7 +65,7 @@ export default {
         },
          created() {
 
-             this.axios.get('subjects/subjectlist')
+             this.axios.get('/subjects/subjectlist')
               .then(function (response) {
                    this.SubjectList = response.data;
                    console.log(this.SubjectList);
@@ -78,7 +78,7 @@ export default {
             {
 
                 this.axios
-               .get(`subjects/edit/${this.$route.params.id}`)
+               .get(`/subjects/edit/${this.$route.params.id}`)
                 .then((response) => {
                         this.Subject.name = response.data.name;
                         this.Subject.parent = response.data.parent;
@@ -115,8 +115,8 @@ export default {
                  if( `${this.$route.params.id}` == "undefined")
                 {
                     this.$swal({
-                                title: "作成",
-                            text: "作成よろしでしょうか。",
+                                title: "確認",
+                            text: "作成よろしいでしょうか。",
                             type: "success",
                             width: 350,
                             height: 200,
@@ -129,14 +129,14 @@ export default {
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                             }).then(response =>{
-                                   this.axios.post('subjects/add', this.Subject)
+                                   this.axios.post('/subjects/add', this.Subject)
                         .then(response => {
                             this.name = ''
                             console.log(response);
                             this.$swal({
                             position: 'top-end',
                             type: 'success',
-                            title: '作成されました',
+                            title: '作成されました。',
                             confirmButtonText: "はい",
                             confirmButtonColor: "#6cb2eb",
                             // showConfirmButton: false,
@@ -171,7 +171,7 @@ export default {
 
                 this.$swal({
                           title: "確認",
-                            text: "更新よろしでしょうか。",
+                            text: "更新よろしいでしょうか。",
                             type: "info",
                             width: 350,
                             height: 200,
@@ -185,7 +185,7 @@ export default {
                             cancelButtonClass: "all-btn"
                         }).then(response => { 
                              this.axios
-                    .post(`api/subjects/update/${this.$route.params.id}`, this.Subject)
+                    .post(`subjects/update/${this.$route.params.id}`, this.Subject)
                     .then((response) => {
                         this.$swal({
                             position: 'top-end',

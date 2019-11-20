@@ -183,11 +183,11 @@
                                         </GmapMap>
                                     </div>
                                     <div class="modal-body">
-                                        <strong><span class="job_ico"><i class="fas fa-map-marker-alt"></i></span>住所</strong>
+                                        <span class="job_ico"><i class="fas fa-map-marker-alt"></i></span><strong>住所</strong>
                                         <br>
                                         <span>{{address}}</span>
                                         <hr>
-                                        <strong><span class="job_ico"><i class="fa fa-map-signs"></i></span>最寄り駅</strong>
+                                        <span class="job_ico"><i class="fa fa-map-signs"></i></span><strong>最寄り駅</strong>
                                         <br>
                                         <p v-html="access"></p>
                                     </div>
@@ -202,7 +202,7 @@
                             <div class="modal-dialog modal-xl" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLongTitle">料金プラン／{{custname}}</h5>
+                                        <h5 class="modal-title" id="exampleModalLongTitle">料金プラン</h5>
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                             <button class="btn btn-secondary">閉じる&times;</button>
                                         </button>
@@ -233,31 +233,6 @@
                         <!-- end monthly cost -->
                     </div>
                 </div>
-
-                <!-- <div class="list-group col-md-3">
-                <div class="list-group-item list-group-item-action" style="height:68px;background:#fff9cb;margin-bottom:39px;">
-                    <input type="checkbox" class="che1 check-all-btn" @change="checkAll()">
-                    <div class="tx1">すべてチェック</div>
-                </div>
-                <div class="list-group-item list-group-item-action" style="height:221px;">
-                    <p class="m-l-20">基本情報</p>
-                </div>
-                <div class="bd">
-                    <div class="list-group-item list-group-item-action" v-if="address_show" style="height:50px;border:none;">住所</div>
-                    <div class="list-group-item list-group-item-action bd1" v-if="tran_show" style="height:100px;">交通アクセス</div>
-                    <div class="list-group-item list-group-item-action bd1" v-if="tran_show || address_show" style="height:50px;"></div>
-                </div>
-                <div class="bd">
-                    <div class="list-group-item list-group-item-action" v-if="month_show" style="height:50px;border:none;">月額費用</div>
-                    <div class="list-group-item list-group-item-action bd1" v-if="entry_show" style="height:100px;">入居一時金</div>
-                    <div class="list-group-item list-group-item-action bd1" v-if="month_show || entry_show" style="height:50px;"></div>
-                </div>
-                <div v-if="condition_show" class="list-group-item list-group-item-action" style="height:166px;">入居条件</div>
-                <div v-if="special_show" class="list-group-item list-group-item-action" style="height:380px;">特長</div>
-                <div v-if="capacity_show" class="list-group-item list-group-item-action" style="height:50px;">Nursing_staff</div>
-                <div v-if="opening_show" class="list-group-item list-group-item-action" style="height:70px;">開設日</div>
-
-            </div> -->
             </div>
             <!--end compare box-->
             <!--result-->
@@ -272,7 +247,7 @@
                         <button type="button" class="btn btn-success all-btn float-right m-l-10" @click="addingMail()" :disabled="isdisable">資料請求する</button>
                     </div>
                 </div>
-                <div style="margin-top: 20px;" id="fav-history-page">
+                <div class="m-t-20" id="fav-history-page">
                     <div class="col-12">
                         <div class="card-carousel-wrapper">
 
@@ -285,14 +260,13 @@
                                     <div class="card-carousel--overflow-container">
                                         <div class="card-carousel-cards" :style="{ transform: 'translateX' + '(' + currentOffset + 'px' + ')'}">
                                             <div class="card-carousel--card">
-                                                <!-- <div class="card-carousel--card--footer"> -->
-
                                             <table class="table table-bordered">
                                                 <tr>
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
-                                                        <img class="img-fluid" v-bind:src="'/upload/nursing_profile/' + nur_profile.logo" alt style="width: 250px; margin-bottom: 15px;" @error="imgUrlAlt"/>
-                                                        <br>
-                                                        <div style="width: 250px">
+                                                        <div class="profile_img_wrap">
+                                                            <img class="profile_img" style="" v-bind:src="'/upload/nursing_profile/' + nur_profile.logo" alt  @error="imgUrlAlt"/>
+                                                        </div> 
+                                                        <div class="profile_wd">
                                                             <router-link :to="{name: 'profile', params: {cusid:nur_profile.customer_id, type: 'nursing'}}" class="pseudolink" style="font-weight:bold;">{{nur_profile.name}}</router-link>
                                                         </div>
                                                     </td>
@@ -310,19 +284,18 @@
                                                 <tr v-if="address_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">住所</dt>
-                                                            <dd style="width:250px;">
+                                                            <dt class="text-left">住所</dt>
+                                                            <dd class="profile_wd">
                                                                 {{nur_profile.township_name}} {{nur_profile.city_name}}
                                                             </dd>
                                                         </dl>
-                                                        <!-- <div v-if="address_show" style="width:250px;"></div> -->
                                                     </td>
                                                 </tr>
                                                 <tr v-if="tran_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">交通手段</dt>
-                                                            <dd style="width:250px;">
+                                                            <dt class="text-left">交通手段</dt>
+                                                            <dd class="profile_wd">
                                                                 <p v-html="nur_profile.access"></p>
                                                             </dd>
                                                         </dl>
@@ -330,43 +303,43 @@
                                                 </tr>
                                                 <tr v-if="address_show || tran_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
-                                                        <div v-if="tran_show || address_show" style="width:250px;"><span class="pseudolink" @click="googlemap(nur_profile.id)" data-toggle="modal" data-target=".bd-example-modal-google"><i class="fa fa-search"></i> 地図・交通アクセス</span></div>
+                                                        <div v-if="tran_show || address_show" class="profile_wd"><span class="pseudolink" @click="googlemap(nur_profile.id)" data-toggle="modal" data-target=".bd-example-modal-google"><i class="fa fa-search"></i> 地図・交通アクセス</span></div>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="entry_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">入居時の費用</dt>
-                                                            <dd style="width:250px;color:#ff6117;font-size:large;"><strong>{{nur_profile.moving_in_from}}円~{{nur_profile.moving_in_to}}円</strong></dd>
+                                                            <dt class="text-left">入居時の費用</dt>
+                                                            <dd class="profile_price"><strong>{{(Math.floor(Number(nur_profile.moving_in_from)/10000))==0? '' : (Math.floor(Number(nur_profile.moving_in_from)/10000)).toLocaleString()+'万' }}{{(Number(nur_profile.moving_in_from)%10000)==0 ? '' : (Number(nur_profile.moving_in_from)%10000).toLocaleString()}}円～</strong></dd>
                                                         </dl>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="month_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">月額の費用</dt>
-                                                            <dd style="color:#ff6117;font-size:large;width:250px;"><strong>{{nur_profile.per_month_from}}円~{{nur_profile.per_month_to}}円</strong></dd>
+                                                            <dt class="text-left">月額の費用</dt>
+                                                            <dd class="profile_price"><strong>{{(Math.floor(Number(nur_profile.per_month_from)/10000))==0? '' : (Math.floor(Number(nur_profile.per_month_from)/10000)).toLocaleString()+'万' }}{{(Number(nur_profile.per_month_from)%10000)==0 ? '' : (Number(nur_profile.per_month_from)%10000).toLocaleString()}}円～</strong></dd>
                                                         </dl>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="month_show || entry_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
-                                                        <div style="width:250px;"><span class="pseudolink" @click="monthlyCost(nur_profile.id)" data-toggle="modal" data-target=".bd-example-modal-cost"><i class="fa fa-search"></i> 料金プランの詳細</span></div>
+                                                        <div class="profile_wd"><span class="pseudolink" @click="monthlyCost(nur_profile.id)" data-toggle="modal" data-target=".bd-example-modal-cost"><i class="fa fa-search"></i> 料金プランの詳細</span></div>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="condition_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">入居条件</dt>
-                                                            <dd style="width:250px">{{nur_profile.occupancy_condition }}</dd>
+                                                            <dt class="text-left">入居条件</dt>
+                                                            <dd class="profile_wd">{{nur_profile.occupancy_condition }}</dd>
                                                         </dl>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="special_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
-                                                        <div class="bd3" style="width:250px;">
+                                                        <div class="profile_wd bd3">
                                                             <ul class="fac_container m-t-8 m-b-15 m-l-8">
-                                                                <h6 style="font-weight:bold;text-align:left;">特長</h6>
+                                                                <h6 class="font-weight-bold text-left">特長</h6>
 
                                                                 <li v-for="feature in nur_profile.special" :key="feature.id">{{ feature.short_name }}</li>
                                                             </ul>
@@ -376,17 +349,17 @@
                                                 <tr v-if="capacity_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">定員</dt>
-                                                            <dd v-if="nur_profile.capacity != null" style="width:250px;">{{nur_profile.capacity }} </dd>
-                                                            <dd v-else style="width:250px;">-人</dd>
+                                                            <dt class="text-left">定員</dt>
+                                                            <dd v-if="nur_profile.capacity != null" class="profile_wd">{{nur_profile.capacity }} </dd>
+                                                            <dd v-else class="profile_wd">-人</dd>
                                                         </dl>
                                                     </td>
                                                 </tr>
                                                 <tr v-if="opening_show">
                                                     <td v-for="nur_profile in fav_nursing" :key="nur_profile.id">
                                                         <dl>
-                                                            <dt style="text-align:left;">開設日</dt>
-                                                            <dd v-if="opening_show" style="width:250px;">{{nur_profile.date_of_establishment }}</dd>
+                                                            <dt class="text-left">開設日</dt>
+                                                            <dd v-if="opening_show" class="profile_wd">{{nur_profile.date_of_establishment }}</dd>
                                                         </dl>
                                                     </td>
                                                 </tr>
@@ -547,24 +520,24 @@
                                 var new_local = l_sto_arr.toString();
                                 localStorage.setItem('nursing_fav', new_local);
                                 this.local_sto = localStorage.getItem("nursing_fav");
-                                this.$swal({
-                                    title: "削除された",
-                                    text: "ファイルが削除されました。",
-                                    type: "success",
-                                    width: 350,
-                                    height: 200,
-                                    confirmButtonText: "はい",
-                                    confirmButtonColor: "#dc3545"
-                                    });
+                                // this.$swal({
+                                //     title: "削除された",
+                                //     text: "ファイルが削除されました。",
+                                //     type: "success",
+                                //     width: 350,
+                                //     height: 200,
+                                //     confirmButtonText: "はい",
+                                //     confirmButtonColor: "#dc3545"
+                                //     });
                                 if (this.local_sto) {
                                     this.getAllFavourite(this.local_sto);
                                 } else {
                                     // window.location.reload();
                                     this.$router.push({
-                                        name: 'home',
-                                        params: {
-                                            page: 'subtab3'
-                                        }
+                                        name: 'nursingSearch',
+                                        // params: {
+                                        //     page: 'subtab3'
+                                        // }
                                     });
                                 }
                             }
@@ -578,7 +551,7 @@
                     },
                     getAllFavourite: function(local_storage) {
                         this.axios
-                            .post('nursing_fav/' + local_storage)
+                            .post('/nursing_fav/' + local_storage)
                             .then(response => {
                                 this.fav_nursing = response.data;
                                 for (var i = 0; i < this.fav_nursing.length; i++) {
@@ -717,8 +690,3 @@
             }
     };
 </script>
-<style>
-.card-carousel dt {
-    padding: 0px 10px 10px 10px;
-}
-</style>

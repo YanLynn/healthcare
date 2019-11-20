@@ -5,10 +5,10 @@
     <div v-if="type == 'nursing'" id="nursingView">
          <span class="top-mail-btn" @click="documentPost()" v-if="!loginuser"><i data-v-b65423c6="" class="far fa-envelope" style="color: #fff  !important;font-size: 15px;"></i>&nbsp;資料請求</span>
         <!--panorama-->
-        <h4 class="profile-tit"  v-if="!currentPanoImage"><i class="fas fa-building"></i> {{customer_name}}</h4>
+        <h4 class="profile-tit"  v-if="!currentPanoImage"> {{customer_name}}</h4>
 
         <div class="col-12 detail_profile_left pad-free"  v-if="currentPanoImage">
-            <h4 class="profile-tit"><i class="fas fa-building"></i> {{customer_name}}</h4>
+            <h4 class="profile-tit">{{customer_name}}</h4>
 
             <div class="thumbnail-img" style="padding:0px;border:none;">
                 <div class="card-carousel" style="background:#fff;">
@@ -39,7 +39,7 @@
                                             </div> -->
                                             <div  class="thumbnails-pano">
                                                 <div v-for="(image,index) in  panoimages" :key="image.id" :class="['thumbnail-image-panorama', (activePanoImage == index) ? 'active' : '']" @click="activatePanoImage(index)" >
-                                                    <img  :src ="'/upload/nursing_profile/Imagepanorama/' + image.photo">
+                                                    <img  :src ="'/upload/nursing_profile/Imagepanorama/' + image.photo" @error="imgUrlAlt">
                                                 </div>
                                             </div>
                                         <!-- </div> -->
@@ -66,17 +66,17 @@
             </div> -->
 
             <button v-scroll-to="{ el: '#element1'}" class="top-fixed-btn"  @click="activate(1)" :class="{ active : active_el == 1 }">
-          
+
                 介護情報
             </button>
 
             <button v-scroll-to="{ el: '#element2' }" class="top-fixed-btn"  @click="activate(2)" :class="{ active : active_el == 2 }">
-                  
+
                 特長
             </button>
 
             <button v-scroll-to="{ el: '#element3' }" class="top-fixed-btn"  @click="activate(3)" :class="{ active : active_el == 3 }">
-                  
+
                 費用
             </button>
 
@@ -103,38 +103,39 @@
 
                              <div class="card-carousel">
 
-                                <div class="card-img">
+                                    <div class="card-img photocard-carousel-wrapper">
 
-                                    <img :src="'/upload/nursing_profile/' +currentImage" alt="">
+                                        <img :src="'/upload/nursing_profile/' +currentImage" alt="" @error="imgUrlAlt">
 
-                                    <div class="actions">
+                                        <div class="actions">
 
-                                        <span @click="prevImage" class="prev">
+                                            <span @click="prevImage" class="prev">
 
-                                            <i class="fas fa-chevron-left"></i>
+                                                <i class="fas fa-chevron-left"></i>
 
-                                        </span>
+                                            </span>
 
-                                        <span @click="nextImage" class="next">
+                                            <span @click="nextImage" class="next">
 
-                                            <i class="fas fa-chevron-right"></i>
+                                                <i class="fas fa-chevron-right"></i>
 
-                                        </span>
+                                            </span>
+
+                                        </div>
 
                                     </div>
 
-                                </div>
-
-                                <div class="row col-12">
-                                    <h5><strong class="img_2">  {{activeImageTitle}} </strong></h5>
-                                    <div class="row col-12 m-b-10">
-                                        <p>{{activeImageDescription}}</p>
+                                    <div class="row col-12 photocard-title">
+                                        <h5><strong class="img_2">  {{activeImageTitle}} </strong></h5>
+                                        <div class="row col-12 m-b-10">
+                                            <p class="text-left">{{activeImageDescription}}</p>
+                                        </div>
                                     </div>
-                                </div>
+
 
                                 <ul class="thumbnails">
                                     <li v-for="(image,index) in  images" :key="image.id" :class="['thumbnail-image', (activeImage == index) ? 'active' : '']" @click="activateImage(index)" >
-                                        <img  :src ="'/upload/nursing_profile/' + image.photo">
+                                        <img  :src ="'/upload/nursing_profile/' + image.photo" @error="imgUrlAlt">
                                     </li>
                                 </ul>
                             </div>
@@ -163,9 +164,9 @@
                                             </th>
                                             <td>
                                                 <font class="cash-lbl">
-                                                    {{(Math.floor(Number(cust.moving_in_from)/10000))==0? '' : (Math.floor(Number(cust.moving_in_from)/10000)).toLocaleString()+'万' }}{{(Number(cust.moving_in_from)%10000)==0 ? '' : (Number(cust.moving_in_from)%10000).toLocaleString()}}円
+                                                    {{(Math.floor(Number(cust.moving_in_from)/10000))==0? '-' : (Math.floor(Number(cust.moving_in_from)/10000)).toLocaleString()+'万' }}{{(Number(cust.moving_in_from)%10000)==0 ? '-' : (Number(cust.moving_in_from)%10000).toLocaleString()}}円
                                                      ~
-                                                    {{(Math.floor(Number(cust.moving_in_to)/10000))==0? '' : (Math.floor(Number(cust.moving_in_to)/10000)).toLocaleString()+'万' }}{{(Number(cust.moving_in_to)%10000)==0 ? '' : (Number(cust.moving_in_to)%10000).toLocaleString()}}円
+                                                    {{(Math.floor(Number(cust.moving_in_to)/10000))==0? '-' : (Math.floor(Number(cust.moving_in_to)/10000)).toLocaleString()+'万' }}{{(Number(cust.moving_in_to)%10000)==0 ? '-' : (Number(cust.moving_in_to)%10000).toLocaleString()}}円
                                                 </font>
                                             </td>
                                         </tr>
@@ -175,9 +176,9 @@
                                             </th>
                                             <td>
                                                 <font class="cash-lbl">
-                                                    {{(Math.floor(Number(cust.per_month_from)/10000))==0? '' : (Math.floor(Number(cust.per_month_from)/10000)).toLocaleString()+'万' }}{{(Number(cust.per_month_from)%10000)==0 ? '' : (Number(cust.per_month_from)%10000).toLocaleString()}}円
+                                                    {{(Math.floor(Number(cust.per_month_from)/10000))==0? '-' : (Math.floor(Number(cust.per_month_from)/10000)).toLocaleString()+'万' }}{{(Number(cust.per_month_from)%10000)==0 ? '-' : (Number(cust.per_month_from)%10000).toLocaleString()}}円
                                                      ~
-                                                    {{(Math.floor(Number(cust.per_month_to)/10000))==0? '' : (Math.floor(Number(cust.per_month_to)/10000)).toLocaleString()+'万' }}{{(Number(cust.per_month_to)%10000)==0 ? '' : (Number(cust.per_month_to)%10000).toLocaleString()}}円
+                                                    {{(Math.floor(Number(cust.per_month_to)/10000))==0? '-' : (Math.floor(Number(cust.per_month_to)/10000)).toLocaleString()+'万' }}{{(Number(cust.per_month_to)%10000)==0 ? '-' : (Number(cust.per_month_to)%10000).toLocaleString()}}円
                                                 </font>
                                             </td>
                                         </tr>
@@ -186,7 +187,7 @@
                                                 <font>住所</font>
                                             </th>
                                             <td>
-                                                <font>{{cust.address}}</font>
+                                                <font>{{(cust.address == '')?'-':cust.address}}</font>
                                             </td>
                                         </tr>
                                         <tr>
@@ -201,9 +202,10 @@
                                             <th width="200" class="custom-bg-color">
                                                 <font>アクセス　</font>
                                             </th>
-                                            <td>
-                                                <p v-html="cust.access"></p>
+                                            <td v-if="cust.access">
+                                                <p v-html=cust.access></p>
                                             </td>
+                                            <td v-else> - </td>
                                         </tr>
                                         <!-- <tr>
                                             <th width="200" class="custom-bg-color">
@@ -249,7 +251,15 @@
             <div class="row ele m-lr-0" id="element2">
 
                 <h5 class="profile_header">特長 </h5>
-                <div  v-for="nurseprofile in nursing_profiles" :key="nurseprofile.id" class="col-md-12"><p v-html="nurseprofile.feature"></p></div>
+                
+                    <div  v-for="nurseprofile in nursing_profiles" :key="nurseprofile.id" class="col-md-12">
+                        <div v-if="nurseprofile.features">
+                            <p v-html="nurseprofile.feature"></p>
+                        </div>
+                        <div v-else>
+                            No data
+                        </div>
+                    </div>
 
             </div>
 
@@ -269,10 +279,12 @@
 
                                 </th>
 
-                                <td width="50%">
+                                <td width="50%" v-if="nusmethod.method">
 
                                     <font>{{nusmethod.method}}</font>
 
+                                </td>
+                                <td v-else> -
                                 </td>
 
                             </tr>
@@ -419,30 +431,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="col-md-12 p-0">
-                        <h3 class="profile_header">フォトアルバム</h3>
-                        <div class="row m-0 gallery-list">
-                            <div v-for="(image,index) in  light_images" :key="index" class="col-sm-4 col-md-4 col-lg-3 m-b-10 gallery-item">                              
-                                    <img  :src ="'/upload/nursing_profile/' + image.name"  class="img-fluid" @click="showLightbox(image.name)"  >
-                                    <span>{{image.title}}</span><br>
-                                
-                                <!-- <span>{{image.photo}}</span> -->
-                            </div>
-                            <lightbox id="mylightbox" ref="lightbox" :images="light_images" :directory="thumbnailDir+'nursing_profile/'" :timeoutDuration="5000" />
-                        </div>
-                    </div>
-
-                    <div class="col-md-12 m-t-15 m-b-15 p-0">
-                        <h3 class="profile_header">動画</h3>
-                        <div class="row m-0">
-                            <div v-for="(video) in  videos" :key="video.id" class="col-sm-4 col-md-4 col-lg-3">
-                                <iframe :src="'https://www.youtube.com/embed/'+video.photo" controls></iframe>
-                                <span style="color:orange;font-weight:bold;">{{video.title}}</span><br>
-                            </div>
-                        </div>
-                    </div>
-
             </div>
 
             <div class="row ele m-lr-0" id="element4">
@@ -459,7 +447,8 @@
 
                                 <td width="250" class="custom-bg-color"> 事業主体</td>
 
-                                <td>{{nus.business_entity}}</td>
+                                <td v-if="nus.business_entity">{{nus.business_entity}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -467,7 +456,8 @@
 
                                 <td width="250" class="custom-bg-color">開設年月日</td>
 
-                                <td>{{nus.date_of_establishment}}</td>
+                                <td v-if="nus.date_of_establishment">{{nus.date_of_establishment}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -475,7 +465,8 @@
 
                                 <td width="250" class="custom-bg-color"> 土地の権利形態 </td>
 
-                                <td>{{nus.land_right_form}}</td>
+                                <td v-if="nus.land_right_form">{{nus.land_right_form}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -483,7 +474,8 @@
 
                                 <td width="250" class="custom-bg-color">建物の権利形態</td>
 
-                                <td>{{nus.building_right_form}}</td>
+                                <td v-if="nus.building_right_form">{{nus.building_right_form}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -491,7 +483,8 @@
 
                                 <td width="250" class="custom-bg-color">敷地面積</td>
 
-                                <td>{{nus.site_area}}</td>
+                                <td v-if="nus.site_area">{{nus.site_area}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -499,7 +492,8 @@
 
                                 <td width="250" class="custom-bg-color">延床面積</td>
 
-                                <td>{{nus.floor_area}}</td>
+                                <td v-if="nus.floor_area">{{nus.floor_area}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -507,7 +501,8 @@
 
                                 <td width="250" class="custom-bg-color">構造</td>
 
-                                <td>{{nus.construction}}</td>
+                                <td v-if="nus.construction">{{nus.construction}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -515,7 +510,8 @@
 
                                 <td width="250" class="custom-bg-color">定員</td>
 
-                                <td>{{nus.capacity}}</td>
+                                <td v-if="nus.capacity">{{nus.capacity}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -523,7 +519,8 @@
 
                                 <td width="250" class="custom-bg-color">総居室・戸数 </td>
 
-                                <td>{{nus.num_rooms}}</td>
+                                <td v-if="nus.num_rooms">{{nus.num_rooms}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -531,7 +528,8 @@
 
                                 <td width="250" class="custom-bg-color">居住の権利形態 </td>
 
-                                <td>{{nus.residence_form}}</td>
+                                <td v-if="nus.residence_form">{{nus.residence_form}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -539,7 +537,8 @@
 
                                 <td width="250" class="custom-bg-color">類型 </td>
 
-                                <td>{{nus.fac_type}}</td>
+                                <td v-if="nus.fac_type">{{nus.fac_type}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -547,7 +546,8 @@
 
                                 <td width="250" class="custom-bg-color">入居条件</td>
 
-                                <td>{{nus.occupancy_condition}}</td>
+                                <td v-if="nus.occupancy_condition">{{nus.occupancy_condition}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -555,7 +555,8 @@
 
                                 <td width="250" class="custom-bg-color">居室区分・間取り等 </td>
 
-                                <td>{{nus.room_floor}}</td>
+                                <td v-if="nus.room_floor">{{nus.room_floor}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -563,7 +564,8 @@
 
                                 <td width="250" class="custom-bg-color"> 居室設備</td>
 
-                                <td>{{nus.living_room_facilities}}</td>
+                                <td v-if="nus.living_room_facilities">{{nus.living_room_facilities}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -571,7 +573,8 @@
 
                                 <td width="250" class="custom-bg-color">共用施設・設備 </td>
 
-                                <td>{{nus.equipment}}</td>
+                                <td v-if="nus.equipment">{{nus.equipment}}</td>
+                                <td v-else>-</td>
 
                             </tr>
 
@@ -581,14 +584,35 @@
 
                     </div>
 
-                <!-- </div> -->
+                    <div class="col-md-12">
+                        <h5 class="profile_subtit">フォトアルバム</h5>
+                        <div class="row gallery-list">
+                            <div v-for="(image,index) in  light_images" :key="index" class="col-sm-4 col-md-4 col-lg-3 m-b-10 gallery-item">
+                                    <img  :src ="'/upload/nursing_profile/' + image.name"  class="img-fluid" @click="showLightbox(image.name)" @error="imgUrlAlt" >
+                                    <span>{{image.title}}</span><br>
 
-
-                        <div class="row col-12 pad-free">
-                            <div class="col-md-12">
-                            <h5 class="profile_header col-md-12"> 協力医療機関</h5>
+                                <!-- <span>{{image.photo}}</span> -->
                             </div>
-                            <div v-if="cooperate_medical.length>0" class="col-md-12">
+                            <lightbox id="mylightbox" ref="lightbox" :images="light_images" :directory="thumbnailDir+'nursing_profile/'" :timeoutDuration="5000" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-12  m-b-15">
+                        <h5 class="profile_subtit">動画</h5>
+                        <span v-if="videos == ''">
+                            <div class="col-sm-4 col-md-4 col-lg-3"> No Data </div>
+                        </span>
+                        <span v-else>
+                            <div v-for="(video) in  videos" :key="video.id" class="col-sm-4 col-md-4 col-lg-3">
+                                <iframe :src="'https://www.youtube.com/embed/'+video.photo" controls></iframe>
+                                <span style="color:orange;font-weight:bold;">{{video.title}}</span><br>
+                            </div>
+                        </span>
+                    </div>
+
+                    <div class="col-12">
+                        <h5 class="profile_subtit">協力医療機関</h5>
+                        <div v-if="cooperate_medical.length>0" class="col-md-12">
                                 <div v-for="comedical in cooperate_medical" :key="comedical.id" class="col-md-12" >
                                     <label class="cost_heading_lbl_mini"><i class="fas fa-university"></i> {{comedical.name}}</label>
                                     <table border="1" class="table table-bordered">
@@ -624,99 +648,75 @@
                                     </table>
 
                                 </div>
-
-                            </div>
-
-
-
                         </div>
+                        <div class="col-md-12" v-else> No Data </div>
+                    </div>
 
-
-
-                       <div class="row col-12">
-
-                                <h5 class="profile_header col-12"> 医療面の受入れ</h5>
-
-                            <div class="row col-12">
-
-                                <div v-for="maccept in medical_acceptance" :key="maccept.id" class="col-md-4" >
-
+                    <div class="col-12">
+                        <h5 class="profile_subtit"> 医療面の受入れ</h5>
+                        <div class="row col-12">
+                            <div v-for="maccept in medical_acceptance" :key="maccept.id" class="col-md-4" >
                                 <div class="col-md-12 accept-box">
                                     <div class="float-left" v-for="(ma,index) in medical" :key="index" style="padding-right:20px;">
-
-                                            <i v-if="ma.name === maccept.name && ma.accept_type === 'accept'" class="fas fa-check green"></i>
-
-                                            <i v-if="ma.name === maccept.name && ma.accept_type === 'unaccept'" class="fas fa-times red"></i>
-
-                                            <i v-if="ma.name === maccept.name && ma.accept_type === 'negotiate'" class="fas fa-adjust blue"></i>
-
+                                        <i v-if="ma.name === maccept.name && ma.accept_type === 'accept'" class="fas fa-check green"></i>
+                                        <i v-if="ma.name === maccept.name && ma.accept_type === 'unaccept'" class="fas fa-times red"></i>
+                                        <i v-if="ma.name === maccept.name && ma.accept_type === 'negotiate'" class="fas fa-adjust blue"></i>
                                     </div>
-
                                     {{maccept.name}}
-
                                 </div>
-
                             </div>
-
-                            </div>
-
                         </div>
-
                         <div class="row col-md-12 float: right" style="display: flex; justify-content: flex-end" >
-
                             <label for="" class="m-r-15"><i class="fas fa-check green"></i> 受入れ可</label>
-
                             <label for="" class="m-r-15"><i class="fas fa-times red"></i> 受入れ不可</label>
-
                             <label for="" class="m-r-15"><i class="fas fa-adjust blue"></i> 応相談</label>
-
                         </div>
+                    </div>
 
+                    <div class=" col-12">
+                        <h5  class="profile_subtit"> 職員体制</h5>
+                        <div v-if="staff.length>0">
 
+                            <div v-for="st in staff" :key="st.id" class="col-md-12" >
 
-                        <div class="row col-12">
-                                <h5  class="profile_header col-12"> 職員体制</h5>
-                            <div v-if="staff.length>0">
+                                <table border="1" class="table table-bordered">
 
-                                <div v-for="st in staff" :key="st.id" class="col-md-12" >
+                                    <tbody>
 
-                                    <table border="1" class="table table-bordered">
+                                        <tr>
 
-                                        <tbody>
+                                            <td width="350" class="custom-bg-color"> 介護に関わる職員体制（入居者：職員）</td>
 
-                                            <tr>
+                                            <td width="500">{{st.staff}}</td>
 
-                                                <td width="350" class="custom-bg-color"> 介護に関わる職員体制（入居者：職員）</td>
+                                            <td width="350" class="custom-bg-color"> 介護職員    </td>
 
-                                                <td width="500">{{st.staff}}</td>
+                                            <td width="500">{{st.nursing_staff}}</td>
 
-                                                <td width="350" class="custom-bg-color"> 介護職員    </td>
+                                        </tr>
 
-                                                <td width="500">{{st.nursing_staff}}</td>
+                                        <tr>
 
-                                            </tr>
+                                            <td width="350" class="custom-bg-color"> 夜間の最少職員数   </td>
 
-                                            <tr>
+                                            <td width="500">{{st.min_num_staff}}</td>
 
-                                                <td width="350" class="custom-bg-color"> 夜間の最少職員数   </td>
+                                            <td width="350" class="custom-bg-color">     看護職員数     </td>
 
-                                                <td width="500">{{st.min_num_staff}}</td>
+                                            <td width="500">{{st.num_staff}}</td>
 
-                                                <td width="350" class="custom-bg-color">     看護職員数     </td>
+                                        </tr>
 
-                                                <td width="500">{{st.num_staff}}</td>
+                                    </tbody>
 
-                                            </tr>
-
-                                        </tbody>
-
-                                    </table>
-
-                                </div>
+                                </table>
 
                             </div>
 
                         </div>
+                        <div v-else class="col-md-12"> No Data </div>
+
+                    </div>
 
             </div>
 
@@ -737,15 +737,15 @@
                                     <tbody>
                                     <tr>
                                         <td width="250" class="custom-bg-color"> 公式サイト</td>
-                                        <td>{{m.website}}</td>
+                                        <td v-if="m.website">{{m.website}}</td> <td v-else> - </td>
                                     </tr>
                                     <tr>
                                         <td width="250" class="custom-bg-color"> アクセス</td>
-                                        <td><p v-html="m.access"></p></td>
+                                        <td v-if="m.access"><p v-html="m.access"></p></td> <td v-else> - </td>
                                     </tr>
                                     <tr>
                                         <td width="250" class="custom-bg-color">住所 </td>
-                                        <td>{{m.address}}</td>
+                                        <td v-if="m.address">{{m.address}}</td> <td v-else> - </td>
                                     </tr>
                                     </tbody>
                                 </table>
@@ -758,7 +758,7 @@
 
 
             <div class="row ele m-lr-0" id="element6">
-                <h5 class="profile_header col-12">口コミ {{customer_name}}</h5>                  
+                <h5 class="profile_header col-12">口コミ ({{customer_name}})</h5>
                 <div class="comment-ico  col-12">
                     <!-- <a href="/comment">
                         <i class="far fa-comment"></i>
@@ -768,7 +768,7 @@
                               <span>口コミを追加する</span></router-link>
                 </div>             
                <div class="col-lg-12 col-md-12 col-sm-12">                  
-                    <div class="card mb-4" v-for="comment in comments" :key="comment.id">
+                    <div class="card mb-4" v-for="comment in displayItems" :key="comment.id">
                         <div class="card-body">
                             <div class="comment-title">
                                 <i class="fas fa-comment"></i>{{comment.title}}
@@ -783,6 +783,27 @@
                         </div>
                     </div>
                </div>
+               <div class="offset-md-4 col-md-8 mt-3" v-if="pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="first"><i class='fas fa-angle-double-left'></i> 最初</span>
+                                    </li>
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="prev"><i class='fas fa-angle-left'></i> 前へ</span>
+                                    </li>
+                                    <li class="page-item" v-for="(i,index) in displayPageRange" :key="index" :class="{active_page: i-1 === currentPage}">
+                                        <span class="spanclass" @click="pageSelect(i)">{{i}}</span>
+                                    </li>
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="next">次へ <i class='fas fa-angle-right'></i></span>
+                                    </li>
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="last">最後 <i class='fas fa-angle-double-right'></i></span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
             </div>
 
             <!-- <div class="ele m-lr-0" id="element7">
@@ -795,7 +816,7 @@
 
     <div v-if="type == 'hospital'" id="hospitalView">
        <!--panorama-->
-            <h5 class="profile-tit"><i class="fas fa-building"></i> {{customer_name}}</h5>
+            <h5 class="profile-tit"> {{customer_name}}</h5>
             <div class="col-12 detail_profile_left pad-free"  v-if="currentPanoImage">
                     <div class="thumbnail-img" style="padding:0px;border:none;">
                         <div class="card-carousel">
@@ -831,7 +852,7 @@
 
                                         <div class="thumbnails-pano">
                                             <div v-for="(image,index) in  panoimages" :key="image.id" :class="['thumbnail-image-panorama', (activePanoImage == index) ? 'active' : '']" @click="activatePanoImage(index)" >
-                                                <img  :src ="'/upload/nursing_profile/Imagepanorama/' + image">
+                                                <img  :src ="'/upload/nursing_profile/Imagepanorama/' + image" @error="imgUrlAlt">
                                             </div>
                                         </div>
                                     <!-- </div> -->
@@ -869,18 +890,18 @@
                 <!-- <div class="row col-12 m-t-10">
                      <h5 style="color:#000" class="h_4 header font15rem font-weight-bold">ひだまりこころクリニック　サンシャインサカエ院</h5>
                 </div> -->
-            
-                
 
-                <button v-scroll-to="{ el: '#element1'}" class="top-fixed-btn">
+
+
+                <button v-scroll-to="{ el: '#element1'}" class="top-fixed-btn" @click="activate(1)" :class="{ active : active_el == 1 }">
                     病院情報
                 </button>
 
-                <button v-scroll-to="{ el: '#element2' }" class="top-fixed-btn">
+                <button v-scroll-to="{ el: '#element2' }" class="top-fixed-btn" @click="activate(2)" :class="{ active : active_el == 2 }">
                     口コミ
                 </button>
 
-                <button v-scroll-to="{ el: '#element3' }" class="top-fixed-btn">
+                <button v-scroll-to="{ el: '#element3' }" class="top-fixed-btn" @click="activate(3)" :class="{ active : active_el == 3 }">
                     地図
                 </button>
 
@@ -901,9 +922,9 @@
 
                              <div class="card-carousel">
 
-                                <div class="card-img">
+                                <div class="card-img photocard-carousel-wrapper">
 
-                                    <img :src="'/upload/hospital_profile/' +currentImage" alt="">
+                                    <img :src="'/upload/hospital_profile/' +currentImage" alt="" @error="imgUrlAlt">
 
                                     <div class="actions">
 
@@ -923,13 +944,13 @@
 
                                 </div>
 
-                                <div class="row col-12">
+                                <div class="row col-12 photocard-title">
 
                                     <h5><strong class="img_2">  {{activeImageTitle}} </strong></h5>
 
                                     <div class="row col-12 m-b-10">
 
-                                         <p>{{activeImageDescription}}</p>
+                                         <p class="text-left">{{activeImageDescription}}</p>
 
                                     </div>
 
@@ -947,7 +968,7 @@
 
                                         @click="activateImage(index)" >
 
-                                        <img  :src ="'/upload/hospital_profile/' + image.photo">
+                                        <img  :src ="'/upload/hospital_profile/' + image.photo" @error="imgUrlAlt">
 
                                     </div>
 
@@ -980,25 +1001,28 @@
                                         <th width="250" class="custom-bg-color">
                                             <font>住所</font>
                                         </th>
-                                        <td>
+                                        <td v-if="cust.address">
                                             <font>{{cust.address}}</font>
                                         </td>
+                                        <td v-else> - </td>
                                     </tr>
                                     <tr>
                                         <th width="250" class="custom-bg-color">
                                             <font>電話番号</font>
                                         </th>
-                                        <td>
+                                        <td v-if="cust.phone">
                                             <font>{{cust.phone}}</font>
                                         </td>
+                                        <td v-else> - </td>
                                     </tr>
                                      <tr>
                                         <th width="250" class="custom-bg-color">
                                             <font>アクセス</font>
                                         </th>
-                                        <td>
+                                        <td v-if="cust.access">
                                             <p v-html="cust.access"></p>
                                         </td>
+                                        <td v-else> - </td>
                                     </tr>
                                      <!-- <tr>
                                         <th width="250" class="custom-bg-color">
@@ -1020,12 +1044,13 @@
                                         <th width="250" class="custom-bg-color">
                                             <font>件名 </font>
                                         </th>
-                                        <td>
+                                        <td v-if="subjects">
                                             <label for="" v-for="sub in subjects" :key="sub.id">
                                                 {{sub.name}}
                                             </label>
                                             <!-- <font>{{cust.subject}}</font> -->
                                         </td>
+                                        <td v-else> - </td>
                                     </tr>
                                 </table>
                             </div>
@@ -1042,7 +1067,7 @@
 
                          <h5 class="header m-t-10">こだわりの特長</h5>
 
-                        <div class="row m-lr-0">
+                        <div class="row m-lr-0" v-if="specialfeature">
 
                             <ul class="fac_container" v-for="special in specialfeature" :key="special.id">
 
@@ -1051,127 +1076,136 @@
                             </ul>
 
                         </div>
+                        <div class="row m-lr-0" v-else> No Data </div>
 
                         <h5 class="header m-t-10">診療科目</h5>
 
-                        <div class="row col-md-12">
+                        <div class="row col-md-12" v-if="subjects">
                             <ul class="sub_container" v-for="sub in subjects" :key="sub.id">
                                 <li>{{sub.name}}</li>
-
                             </ul>
-
                         </div>
-
+                        <div class='row col-md-12' v-else> No Data </div>
                     </div>
                     <!--end for address-->
                 </div>
             <!--end ee-->
 
-                <h5 class="profile_header">医院からのお知らせ </h5>
+                <div class="col-12 m-b-20">
+                    <h5 class="profile_subtit">医院からのお知らせ </h5>
+                    <p v-for="hospital in hospitals" :key="hospital.id">
+                        <span v-if="hospital.details_info">{{hospital.details_info}}</span>
+                        <span v-else>No Data</span>
+                    </p>
+                </div>
+                <div class="col-12 m-b-20">
+                    <h5 class="profile_subtit">診療時間 </h5>
+                    <div class="row">
+                        <div class="col-9">
+                            <table class="table table-bordered">
+                                <tbody>
 
-                <div class="row m-lr-0">
+                                    <tr class="first-row">
 
-                    <div class="col-md-12 m-2" v-for="hospital in hospitals" :key="hospital.id">
+                                        <th>
 
-                        <p>{{hospital.details_info}}</p>
+                                        日付
 
+                                        </th>
+
+                                        <th>
+
+                                            月
+
+                                        </th>
+
+                                        <th>
+
+                                            火
+
+                                        </th>
+
+                                        <th>
+
+                                            水
+
+                                        </th>
+
+                                        <th>
+
+                                            木
+
+                                        </th>
+
+                                        <th>
+
+                                            金
+
+                                        </th>
+
+                                        <th>
+
+                                            土
+
+                                        </th>
+
+                                        <th>
+
+                                            日
+
+                                        </th>
+
+                                    </tr>
+
+                                    <tr class="last">
+
+                                        <th class="second-row text-center">午前</th>
+
+                                        <span v-if="am_arr[0]">
+                                            <td v-for="(amval,index) in am_arr[0]" :key="index" class="text-center">
+                                                <span v-if="amval"> {{amval}} </span>
+                                                <span v-else> - </span>
+                                            </td>
+                                        </span>
+                                        <span v-else>
+                                            <td v-for="indx in 6" :key="indx" class="text-center"> - </td>
+                                        </span>
+
+                                    </tr>
+
+                                    <tr class="last">
+
+                                        <th class="second-row text-center">午後</th>
+
+                                        <span v-if="pm_arr[0]">
+                                            <td v-for="(amval,index) in pm_arr[0]" :key="index" class="text-center">
+                                                <span v-if="amval"> {{amval}} </span>
+                                                <span v-else> - </span>
+                                            </td>
+                                        </span>
+                                        <span v-else>
+                                            <td v-for="indx in 6" :key="indx" class="text-center"> - </td>
+                                        </span>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-3">
+
+                            <div v-for="hospital in hospitals" :key="hospital.id">
+
+                                <p><strong class="font-weight-bold">休診日: </strong>
+                                    <span v-if="hospital.closed_day"><font>{{hospital.closed_day}}</font></span>
+                                    <span v-else> No Data </span>
+                                </p>
+
+                            </div>
+
+                        </div>
                     </div>
-
-                </div>
-
-                <h5 class="profile_header">診療時間 </h5>
-
-                <div class="row col-12 m-b-10">
-
-                    <div class="col-9">
-
-                    <table class="table table-bordered">
-
-                    <tbody>
-
-                        <tr class="first-row">
-
-                            <th>
-
-                               日付
-
-                            </th>
-
-                            <th>
-
-                                月
-
-                            </th>
-
-                            <th>
-
-                                火
-
-                            </th>
-
-                            <th>
-
-                                水
-
-                            </th>
-
-                            <th>
-
-                                木
-
-                            </th>
-
-                            <th>
-
-                                金
-
-                            </th>
-
-                            <th>
-
-                                土
-
-                            </th>
-
-                            <th>
-
-                                日
-
-                            </th>
-
-                        </tr>
-
-                        <tr class="last">
-
-                            <th class="second-row text-center">午前</th>
-
-                            <td v-for="(amval,index) in am_arr[0]" :key="index" class="text-center">{{amval}}</td>
-
-                        </tr>
-
-                        <tr class="last">
-
-                            <th class="second-row text-center">午後</th>
-
-                            <td v-for="(amval,index) in pm_arr[0]" :key="index" class="text-center">{{amval}}</td>
-
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-                </div>
-
-                <div class="col-3">
-
-                    <div v-for="hospital in hospitals" :key="hospital.id">
-
-                        <p><strong class="font-weight-bold">休診日: </strong><font>{{hospital.closed_day}}</font> </p>
-
-                    </div>
-
-                </div>
 
                 <!-- <div class="row col-12">
 
@@ -1181,44 +1215,30 @@
 
                 </div>
 
-
-
-                <h5 class="profile_header">施設情報 </h5>
-
                 <div class="col-12">
-
+                    <h5 class="profile_subtit">施設情報 </h5>
                     <div class="row col-md-12">
-
-                            <div class="col-md-2 fac-name-box" v-for="hosfacility in hosfacilities " :key="hosfacility.id">
-
+                        <div class="col-md-2 fac-name-box" v-for="hosfacility in hosfacilities " :key="hosfacility.id">
                             <h4>{{hosfacility.description}}</h4>
-
-                            <div class="fac-check-box">
-
-                                <p v-for="fac in fac_list" :key="fac.id">
-
-                                    <i v-if="fac.id === hosfacility.id">〇</i>
-
-                                </p>
-
-
-
+                            <div class="fac-check-box" v-if="fac_list">
+                                <span v-if="fac_list.length>0">
+                                    <p v-for="fac in fac_list" :key="fac.id">
+                                        <i v-if="fac.id === hosfacility.id">〇</i>
+                                    </p>
+                                </span>
+                                <span v-else>
+                                    <p> - </p>
+                                </span>
                                 <!-- <i class="fa fa-circle-o fa-stack-2x" v-if="fac.id === hosfacility.id"></i>  -->
-
                             </div>
-
                         </div>
-
                     </div>
-
-
-
                 </div>
 
             </div>
 
             <div class="row ele m-lr-0" id="element2">
-                <h5 class="profile_header col-12 m-t-20">口コミ {{customer.name}}</h5>                  
+                <h5 class="profile_header col-12 m-t-20">口コミ ({{customer.name}})</h5>
                 <div class="comment-ico  col-12">
                     <!-- <a href="/comment">
                         <i class="far fa-comment"></i>
@@ -1228,7 +1248,7 @@
                               <span>口コミを追加する</span></router-link>
                 </div>             
                <div class="col-lg-12 col-md-12 col-sm-12">                  
-                    <div class="card mb-4" v-for="comment in comments" :key="comment.id">
+                    <div class="card mb-4" v-for="comment in displayItems" :key="comment.id">
                         <div class="card-body">
                             <div class="comment-title">
                                 <i class="fas fa-comment"></i>{{comment.title}}
@@ -1243,15 +1263,36 @@
                         </div>
                     </div>
                </div>
+               <div class="offset-md-4 col-md-8 mt-3" v-if="pagination">
+                            <nav aria-label="Page navigation example">
+                                <ul class="pagination">
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="first"><i class='fas fa-angle-double-left'></i> 最初</span>
+                                    </li>
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="prev"><i class='fas fa-angle-left'></i> 前へ</span>
+                                    </li>
+                                    <li class="page-item" v-for="(i,index) in displayPageRange" :key="index" :class="{active_page: i-1 === currentPage}">
+                                        <span class="spanclass" @click="pageSelect(i)">{{i}}</span>
+                                    </li>
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="next">次へ <i class='fas fa-angle-right'></i></span>
+                                    </li>
+                                    <li class="page-item">
+                                        <span class="spanclass" @click="last">最後 <i class='fas fa-angle-double-right'></i></span>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
             </div>
 
             <div class="col-md-12">
-                <h3 class="profile_header">フォトアルバム</h3>
+                <h5 class="profile_subtit">フォトアルバム</h5>
                 <div class="row m-0 gallery-list">
-                    <div v-for="(image,index) in  light_images" :key="index" class="col-sm-4 col-md-4 col-lg-3 m-b-10 gallery-item">                            
-                        <img  :src ="'/upload/hospital_profile/' + image.name"  class="img-fluid" @click="showLightbox(image.name)"  >
+                    <div v-for="(image,index) in  light_images" :key="index" class="col-sm-4 col-md-4 col-lg-3 m-b-10 gallery-item">
+                        <img  :src ="'/upload/hospital_profile/' + image.name"  class="img-fluid" @click="showLightbox(image.name)" @error="imgUrlAlt" >
                         <span style="color:orange;font-weight:bold;">{{image.title}}</span><br>
-                        
+
                         <!-- <span>{{image.photo}}</span> -->
                     </div>
                     <lightbox id="mylightbox" ref="lightbox" :images="light_images" :directory="thumbnailDir+'hospital_profile/'" :timeoutDuration="5000" />
@@ -1259,12 +1300,17 @@
             </div>
 
             <!-- Hospital Video -->
-                <div class="col-md-12 m-t-15 m-b-15 p-0">
-                    <h5 class="profile_header col-12">動画</h5>
-                    <div class="row">
+                <div class="col-md-12">
+                    <h5 class="profile_subtit">動画</h5>
+                    <div class="row" v-if="videos.length>0">
                         <div v-for="(video) in  videos" :key="video.id" class="col-sm-4 col-md-4 col-lg-3">
                             <iframe :src="'https://www.youtube.com/embed/'+video.photo" controls></iframe>
                             <span style="color:orange;font-weight:bold;">{{video.title}}</span><br>
+                        </div>
+                    </div>
+                    <div class="row" v-else>
+                        <div class="col-sm-4 col-md-4 col-lg-3">
+                            <span> No Data </span>
                         </div>
                     </div>
                 </div>
@@ -1276,42 +1322,41 @@
 
                 <div class="col-lg-12 col-md-12 col-sm-12">
 
-                            <GmapMap id="googlemap" ref="map" :center="center" :zoom="10" >
+                    <GmapMap id="googlemap" ref="map" :center="center" :zoom="10" >
 
-                            <GmapMarker v-for="(m, index) in markers" :key="index" :position="m.position" :clickable="true" :draggable="true" @click="center=m.position" />
+                    <GmapMarker v-for="(m, index) in markers" :key="index" :position="m.position" :clickable="true" :draggable="true" @click="center=m.position" />
 
-                           </GmapMap>
+                    </GmapMap>
 
-                        <div  class="row col-12" style="padding-top:20px;" v-for="m in google" :key="m.id" >
+                </div>
+                <div  class="col-12 m-t-20" v-for="m in google" :key="m.id" >
                              <table border="1" class="table table-bordered">
                                     <tbody>
                                     <tr>
-                                        <td width="250" class="custom-bg-color"> 公式サイト</td>
-                                        <td>{{m.website}}</td>
+                                        <td class="custom-bg-color"> 公式サイト</td>
+                                        <td v-if="m.website">{{m.website}}</td> 
+                                        <td v-else> - </td>
                                     </tr>
                                     <tr>
-                                        <td width="250" class="custom-bg-color"> アクセス</td>
-                                        <td><p v-html="m.access"></p></td>
+                                        <td class="custom-bg-color"> アクセス</td>
+                                        <td v-if="m.access"><p v-html="m.access"></p></td>
+                                        <td v-else> - </td>
                                     </tr>
                                     <tr>
-                                        <td width="250" class="custom-bg-color"> 混雑状況</td>
-                                        <td>{{m.congestion}}</td>
+                                        <td class="custom-bg-color"> 混雑状況</td>
+                                        <td v-if="m.congestion">{{m.congestion}}</td>
+                                        <td v-else> - </td>
                                     </tr>
                                     <tr>
-                                        <td width="250" class="custom-bg-color">住所 </td>
-                                        <td>{{m.address}}</td>
+                                        <td class="custom-bg-color">住所 </td>
+                                        <td v-if="m.address">{{m.address}}</td>
+                                        <td v-else> - </td>
                                     </tr>
                                     </tbody>
                                 </table>
                         </div>
 
-                    </div>
-
             </div>
-
-            <!-- <div class="ele m-lr-0" id="element4">
-                <joboffer profile="profile"></joboffer>
-            </div> -->
 
     </div>
 
@@ -1324,13 +1369,11 @@
 <script>
 
 
-import joboffer from './JobSearchListComponent.vue'
 import Pannellum from '../../js/components/vue-pannellum.vue'
 import Lightbox from 'vue-my-photos'
 export default {
 
     components:{
-        joboffer,
         Pannellum,
         Lightbox
     },
@@ -1350,7 +1393,7 @@ export default {
                 images:[],
                 videos:[],
                 pm_arr:[],
-                active_el:null,
+                active_el:0,
                 width: '',
                 center: { lat: 0, lng: 0 },
                 address: '',
@@ -1403,6 +1446,11 @@ export default {
                 windowSize: 10,
                 paginationFactor:103,
                 fav_email : [],
+                currentPage: 0,
+                size: 5,
+                pageRange: 5,
+                items: [],
+                pagination: false,
                 data: {
                 str:"Welcome to Canada!",
                 substr: ""
@@ -1428,22 +1476,30 @@ export default {
 
             this.type = localStorage.getItem('cusType');
             this.cusid = Number(localStorage.getItem('cusId'));
-          
+
             if(this.loginuser == true) {
                 $(document).scroll(function() {
-                 
+
                     $(".fixed-nav").css({"position": "fixed","top":"70px"});
-                    var cur_pos = $(this).scrollTop();  
-                   
-                    $('.ele').each(function(active_el){
-               
-                       if($(this).position().top <= cur_pos){                                
+                    var cur_pos = $(this).scrollTop();
 
-                            $('.top-fixed-btn').removeClass('active');      
-                            $('.top-fixed-btn').eq(active_el+1).addClass('active');                   
-                       }
-                   });
+                //     $('.ele').each(function(active_el){
 
+                //        if($(this).position().top <= cur_pos){
+
+                //             $('.top-fixed-btn').removeClass('active');
+                //             $('.top-fixed-btn').eq(active_el+1).addClass('active');
+                //        }
+                //    });
+
+                    var cur_pos = $(this).scrollTop();
+                     $('.ele').each(function(active_el){
+
+                        if($(this).position().top <= cur_pos){
+                            $('.top-fixed-btn.active').removeClass('active');
+                            $('.top-fixed-btn').eq(active_el).addClass('active');
+                        }
+                    });
                     if (cur_pos >= 100) {
                         $(".fixed-nav").css({"position": "fixed","top":"70px"});
                     } else {
@@ -1454,10 +1510,10 @@ export default {
 
             } else {
                 $(document).scroll(function() {
-                    $(".fixed-nav").css({"position": "fixed","top":"210px"});
+                    $(".fixed-nav").css({"position": "fixed","top":"100px"});
                     var cur_pos = $(this).scrollTop();
                     if (cur_pos >= 100) {
-                        $(".fixed-nav").css({"position": "fixed","top":"210px"});
+                        $(".fixed-nav").css({"position": "fixed","top":"100px"});
                     } else {
                         $(".fixed-nav").css({"position": "unset", "top": "unset"});
                     }
@@ -1465,12 +1521,12 @@ export default {
             }
             if(this.type == "nursing")
             {
-                this.axios.get('profile/customer/'+this.cusid+'/'+this.type) .then(response => {
+                this.axios.get('/profile/customer/'+this.cusid+'/'+this.type) .then(response => {
                       this.customer = response.data;
                       this.customer_name = response.data[0].name;
                 });
 
-                this.axios.get('profile/nursing/'+this.cusid) .then(response => {
+                this.axios.get('/profile/nursing/'+this.cusid) .then(response => {
                     this.nursing_profiles = response.data.feature;
 
                     this.nus_method= response.data.method;
@@ -1478,7 +1534,7 @@ export default {
                     this.method_payment = response.data.cost;
 
                     this.nusfacilities = response.data.facility;
-           
+
 
                     this.cooperate_medical = response.data.comedical;
 
@@ -1529,30 +1585,35 @@ export default {
 
 
 
-                this.axios.get(`profile/specialfeature/${this.type}/${this.cusid}`) .then(response => {
+                this.axios.get(`/profile/specialfeature/${this.type}/${this.cusid}`) .then(response => {
                     this.specialfeature = response.data;
 
                 });
 
-                  this.axios.get('profile/comment/'+this.cusid) .then(response => {
-                    
+                  this.axios.get('/profile/comment/'+this.cusid) .then(response => {
+
                       this.comments = response.data;
+                      if(this.comments.length > this.size){
+                          this.pagination = true;
+                      }else{
+                          this.pagination = false;
+                      }
                     // for ( var index=0; index<response.data.length; index++ ) {
 
                     //     data = { "created_date": "1", "created_time": "Valid" };
                     //     this.comments.push(data);
                     //         // tempData.push( data );
                     // }
-                });                  
+                });
 
             }
 
             else{
-                this.axios.get('profile/customer/'+this.cusid+'/'+this.type).then(response => {
+                this.axios.get('/profile/customer/'+this.cusid+'/'+this.type).then(response => {
                     this.customer = response.data;
                     this.customer_name = response.data[0].name;
                 });
-                this.axios.get('profile/hospital/'+this.cusid).then(response => {
+                this.axios.get('/profile/hospital/'+this.cusid).then(response => {
                     this.google = response.data.hoslatlong;
 
                     this.hospitals = response.data.hospital;
@@ -1600,24 +1661,29 @@ export default {
 
                 });
 
-                this.axios.get(`profile/specialfeature/${this.type}/${this.cusid}`).then(response => {
+                this.axios.get(`/profile/specialfeature/${this.type}/${this.cusid}`).then(response => {
 
                     this.specialfeature = response.data;
 
                 });
 
-                 this.axios.get('profile/comment/'+this.cusid).then(response => {
+                 this.axios.get('/profile/comment/'+this.cusid).then(response => {
 
                       this.comments = response.data;
+                      if(this.comments.length > this.size){
+                          this.pagination = true;
+                      }else{
+                          this.pagination = false;
+                      }
 
-                });                 
+                });
 
-                this.axios.get('profile/subject/'+this.cusid).then(response => {
+                this.axios.get('/profile/subject/'+this.cusid).then(response => {
                       this.subjects = response.data;
 
                 });
 
-                 this.axios.get('profile/schedule/'+this.cusid) .then(response => {
+                 this.axios.get('/profile/schedule/'+this.cusid) .then(response => {
 
                         this.am_arr = response.data.am;
                         this.pm_arr = response.data.pm;
@@ -1673,9 +1739,41 @@ export default {
 
                 }
 
-            }
-
-
+            },
+            pages() {
+                    return Math.ceil(this.comments.length / this.size);
+                },
+                displayPageRange() {
+                    const half = Math.ceil(this.pageRange / 2);
+                    const isEven = this.pageRange / 2 == 0;
+                    const offset = isEven ? 1 : 2;
+                    let start, end;
+                    if (this.pages < this.pageRange) {
+                        start = 1;
+                        end = this.pages;
+                    } else if (this.currentPage < half) {
+                        start = 1;
+                        end = start + this.pageRange - 1;
+                    } else if (this.pages - half < this.currentPage) {
+                        end = this.pages;
+                        start = end - this.pageRange + 1;
+                    } else {
+                        start = this.currentPage - half + offset;
+                        end = this.currentPage + half;
+                    }
+                    let indexes = [];
+                    for (let i = start; i <= end; i++) {
+                        indexes.push(i);
+                    }
+                    return indexes;
+                },
+                displayItems() {
+                    const head = this.currentPage * this.size;
+                    return this.comments.slice(head, head + this.size);
+                },
+                isSelected(page) {
+                    return page - 1 == this.currentPage;
+                }
         },
         methods: {
             changeBg(ch,a) {
@@ -1747,7 +1845,8 @@ export default {
 
              activate:function(el){
 
-                // this.active_el = el;
+                 this.active_el = el;
+
 
             },
 
@@ -1772,8 +1871,30 @@ export default {
         this.$router.push({
             name: 'nursingFavouriteMail',
         });
+    },
+     imgUrlAlt(event) {
+                event.target.src = "images/noimage.jpg"
+    },
+    first() {
+        this.currentPage = 0;
+    },
+    last() {
+        this.currentPage = this.pages - 1;
+    },
+    prev() {
+        if (0 < this.currentPage) {
+            this.currentPage--;
     }
-
+    },
+    next() {
+        if (this.currentPage < this.pages - 1) {
+            this.currentPage++;
+        }
+    },
+    pageSelect(index) {
+        this.currentPage = index - 1;
+        window.scrollTo(0,0);
+    },
   }
 
  }
@@ -2016,7 +2137,7 @@ export default {
 
 .cost_heading_lbl{
     border-left: 5px solid rgb(249, 121, 60);
-    padding: 5px 10px;
+    padding: 0 5px;
     font-weight: bold;
     font-size: 1.14em;
 }
@@ -2028,7 +2149,6 @@ export default {
 }
 
 .cost_heading_lbl_mini i{
-    padding: 0px 10px;
     border-radius: 3px;
     /* background: #fbaa84; */
     color: #d2571c;
@@ -2097,7 +2217,7 @@ export default {
     display: inline-block;
     float: right;
     font-size: 13px;
-    color: #111; 
+    color: #111;
     border: 1px solid #111;
     padding: 5px 20px;
     border-radius: 20px;
@@ -2147,6 +2267,16 @@ export default {
 .card-carousel {
     user-select: none;
     position: relative;
+}
+.photocard-carousel-wrapper{
+    height: 300px;
+    min-height: 300px;
+    max-height: 300px;
+    overflow: hidden;
+
+}
+.photocard-title{
+    min-height: 70px;
 }
 .progressbar {
     display: block;
@@ -2216,6 +2346,7 @@ export default {
 .card-img > img {
     display: block;
     margin: 0 auto;
+    width: 100%;
 }
 .actions {
     font-size: 1.5em;

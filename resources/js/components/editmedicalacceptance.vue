@@ -52,7 +52,7 @@ export default {
         },
         created() {
             this.axios
-                .get(`medical/edit/${this.$route.params.id}`)
+                .get(`/medical/edit/${this.$route.params.id}`)
                 .then((response) => {
                     this.medical = response.data;
                    
@@ -62,7 +62,7 @@ export default {
          methods: {
             updatemedical() {
                 this.axios
-                    .post(`medical/update/${this.$route.params.id}`, this.medical)
+                    .post(`/medical/update/${this.$route.params.id}`, this.medical)
                     .then((response) => {
                           alert('Successfully Updated!')
                         this.$router.push({name: 'medicalacceptancelist'});

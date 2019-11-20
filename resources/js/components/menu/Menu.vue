@@ -1,82 +1,70 @@
 <template>
 <!--navigation bar-->
-<nav class="navbar navbar-expand-lg navbar-dark main-header" id="nav">
-  <a class="navbar-brand" href="#">
-      <img src="/images/trust_growth.png" alt="">
- </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+<nav class="navbar navbar-expand-lg  main-header">
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav ml-auto col-lg-2 pad-free">
-          <!--UNLOGGED-->
-          <li class="nav-item btn login-register-btn col-lg-6 p-lr-0" v-if="!$auth.check()" v-for="(route, key) in routes.unlogged" v-bind:key="route.path">
-                  <router-link  :to="{ name : route.path }" :key="key">
-                      {{route.name}}
-                  </router-link>
-              <!-- <a class="nav-link pad-free" href="{{ route('login') }}">{{ __('事業者 ログイン') }}</a> -->
-          </li>
-          <!--LOGGED USER-->
-          <li v-if="$auth.check(1)" v-for="(route, key) in routes.user" v-bind:key="route.path" class="nav-item btn login-register-btn col-lg-6 p-lr-0">
-                <router-link  :to="{ name : route.path }" :key="key">
-                    {{route.name}}
-                </router-link>
+        <div class="container nav-warp d-flex">
+
+
+          <div class="d-flex">
+            <a class="navbar-brand logo-text" href="/">
+              LOGO <span>HERE</span>
+            </a>
+            <p class="h-tel"><i class="fas fa-phone-alt"></i><span>03-1234-5678</span><br>&nbsp;&nbsp;&nbsp;&nbsp;<a href="mailto:mpm_secretary@management-partners.co.jp">mpm_secretary@management-partners.co.jp</a></p>
+          </div>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <ul class="gNav">
+            <li>
+              <router-link :to="{ name: 'News' }"> ニュース（ホーム）</router-link>
             </li>
-            <!--LOGGED ADMIN-->
-            <li v-if="$auth.check(2)" v-for="(route, key) in routes.admin" v-bind:key="route.path" class="nav-item btn login-register-btn col-lg-6 p-lr-0">
-                <router-link  :to="{ name : route.path }" :key="key">
-                    {{route.name}}
-                </router-link>
+            <li>
+              <router-link :to="{ name: 'nursingSearch' }">介護施設検索</router-link>
             </li>
-            <!--LOGOUT-->
-            <li v-if="$auth.check()" class="nav-item btn login-register-btn col-lg-6 p-lr-0">
-                <a href="#" @click.prevent="$auth.logout()">Logout</a>
+            <li>
+              <router-link :to="{ name: 'hospital_search' }"> 病院検索</router-link>
             </li>
-    </ul>
-    
-  </div>
-  </nav>
+            <li>
+              <router-link :to="{ name: 'jobSearch' }">求人検索</router-link>
+            </li>
+          </ul>
+
+          <div class="collapse navbar-collapse  d-flex justify-content-end" id="navbarSupportedContent">
+              <div class="d-flex">
+                <ul class="navbar-nav ml-auto pc  d-flex justify-content-end">
+                  
+                  <li class="nav-item" v-if="!$auth.check()">
+                    <router-link :to="{name: 'register'}" class="nav-link pad-free">事業者 登録</router-link>
+                  </li>
+                  <li class="nav-item" v-if="!$auth.check()">
+                    <router-link :to="{name: 'login'}" class="nav-link pad-free">事業者 ログイン</router-link>
+                  </li>
+                  <li class="social-link" v-if="!$auth.check()"><a href="http://localhost:8000/registerForm"><i class="fab fa-twitter"></i></a></li>
+                  <li class="social-link" v-if="!$auth.check()"><a href="http://localhost:8000/registerForm"><i class="fab fa-facebook-f"></i></a></li>
+        
+                  <li class="nav-item col-12 userprofile-name pc" v-else>
+                 
+                  </li>
+                  <li v-if="$auth.check()" class="nav-item btn login-register-btn col-lg-6 p-lr-0">
+                      <a href="#" @click.prevent="$auth.logout()">Logout</a>
+                  </li>
+                </ul>
+              </div>
+          </div>
+
+
+
+        </div>
+
+      </nav>
+
   <!--end navigation bar-->
 
 </template>
 <script>
   export default {
-    data() {
-      return {
-        routes: {
-          // UNLOGGED
-          unlogged: [
-            {
-              name: 'Register',
-              path: 'register'
-            },
-            {
-              name: 'Login',
-              path: 'login'
-            }
-          ],
-          // LOGGED USER
-          user: [
-            {
-              name: 'Dashboard',
-              path: 'dashboard'
-            }
-          ],
-          // LOGGED ADMIN
-          admin: [
-            {
-              name: 'Dashboard',
-              path: 'admin.dashboard'
-            }
-          ],
-        
-        }
-      }
-    },
-    mounted() {
-
-    },
+    
+    
 
   }
 </script>

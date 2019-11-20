@@ -76,7 +76,7 @@ export default {
   },
 
   created() {
-    this.axios.get("station/stations").then(response => {
+    this.axios.get("/station/stations").then(response => {
       this.stations = response.data;
       this.norecord = this.stations.length;
     });
@@ -99,7 +99,7 @@ export default {
         cancelButtonClass: "all-btn"
       }).then(response => {
         this.axios
-          .delete(`station/delete/${id}`)
+          .delete(`/station/delete/${id}`)
           .then(response => {
               this.stations = response.data;
               this.norecord = this.stations.length;
@@ -125,7 +125,7 @@ export default {
       var search_word = $("#search-item").val();
       let fd = new FormData();
       fd.append("search_word", search_word);
-      this.axios.post("station/search", fd).then(response => {
+      this.axios.post("/station/search", fd).then(response => {
         this.stations = response.data;
       });
     }

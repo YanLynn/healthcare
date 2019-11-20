@@ -46,7 +46,7 @@ export default {
   },
   created() {
     this.axios
-      .get(`station/edit/${this.$route.params.id}`)
+      .get(`/station/edit/${this.$route.params.id}`)
       .then(response => {
         this.station = response.data;
 
@@ -55,7 +55,7 @@ export default {
 
   methods: {
     updateStation() { 
-      this.axios.post(`station/update/${this.$route.params.id}`, this.station).then(response => {
+      this.axios.post(`/station/update/${this.$route.params.id}`, this.station).then(response => {
         this.name = "";
         this.$swal({
             position: 'top-end',

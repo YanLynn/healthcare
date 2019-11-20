@@ -1345,24 +1345,25 @@ export default {
                 this.cusid = Number(localStorage.getItem('cusId'));
 
                 this.axios
-                .get('clinical-subject/'+this.cusid)
+                .get('/clinical-subject/'+this.cusid)
                 .then(response=>{
                         this.clinical_subj = response.data;
                 });
                  this.axios
-                .get('schedule/'+this.cusid)
+                .get('/schedule/'+this.cusid)
                 .then(response=>{
                         this.schedule_arr = response.data;
                 });
                 this.axios
-                .get('customerinfo/'+this.cusid)
+                .get('/customerinfo/'+this.cusid)
                 .then(response=>{
                         this.customer_info = response.data;
                 });
                 this.axios
-                .get('hospitalinfo/'+this.cusid)
+                .get('/hospitalinfo/'+this.cusid)
                 .then(response=>{
                     this.hospital_info = response.data;
+                    
                     if(this.hospital_info.latitude == 0){
                         localStorage.setItem('lat_num',35.6803997);
                         localStorage.setItem('lng_num',139.76901739);
@@ -1373,22 +1374,22 @@ export default {
                     }
                 });
                 this.axios
-                .get('hospital-pgallery/'+this.cusid)
+                .get('/hospital-pgallery/'+this.cusid)
                 .then(response=>{
                         this.img_arr = response.data;
                 });
                 this.axios
-                .get('hospital-vgallery/'+this.cusid)
+                .get('/hospital-vgallery/'+this.cusid)
                 .then(response=>{
                         this.video_arr = response.data;
                 });
                 this.axios
-                .get('feature/'+this.profile_type+'/'+this.cusid)
+                .get('/feature/'+this.profile_type+'/'+this.cusid)
                 .then(response=>{
                         this.feature_list = response.data;
                 });
                 this.axios
-                .get('facility/'+this.profile_type+'/'+this.cusid)
+                .get('/facility/'+this.profile_type+'/'+this.cusid)
                 .then(response=>{
                         this.fac_list = response.data;
                 });
@@ -1514,7 +1515,6 @@ export default {
             },
             Create_Profile () {
                     this.customer_info = [];
-
                     var name = $('.customer-name').val();
                     var email = $('.customer-email').text();
                     var phone = $('.customer-phone').val();
@@ -1524,7 +1524,7 @@ export default {
                     // var access = $('.access').val();
                     var subject = $('.subject').val();
                     var specialist = $('.specialist').val();
-                    var details_info = $('.details-info').val();
+                    var details_info = $('.details-info').text();
                     var close_day = $('.close-day').val();
                     var website = $('.website').val();
                     var congestion = $('.congestion').val();
@@ -1533,28 +1533,32 @@ export default {
                     localStorage.setItem('lat_num',latitude);
                     localStorage.setItem('lng_num',longitude);
 
-                      var img = document.getElementsByClassName('gallery-area-photo');
-                      for(var i = 0; i< img.length; i++) {
+                    var img = document.getElementsByClassName('gallery-area-photo');
+                    let pt = new FormData();
+                    for(var i = 0; i< img.length; i++) {
                           var file = img[i].getElementsByClassName('hospital-photo')[0].files[0];
-                          if(file) {
-                                  var file_name = file.name;
-                                          let fd = new FormData();
-                                          fd.append('file' ,file )
-                                          fd.append('photo' ,file_name )
-                                          fd.append('type', 'photo')
-                                          this.axios.post('hospital/movephoto', fd)
-                                                  .then(response => {
-                                                  }).catch(error=>{
-                                                          console.log(error);
-                                                  if(error.response.status == 422){
-                                                          this.errors = error.response.data.errors
-                                                  }
-                                          })
+                          if(file) {                   
+                                var file_name = file.name;
+                                pt.append(i ,file )
+
+                                        // let fd = new FormData();
+                                        // fd.append('file' ,file )
+                                        // fd.append('photo' ,file_name )
+                                        // fd.append('type', 'photo')
                           } else {
                                   var file_name = img[i].getElementsByClassName('already-photo')[0].value;
                           }
                           this.img_list.push({type:"photo",photo:file_name,title:img[i].getElementsByClassName('title')[0].value, description:img[i].getElementsByClassName('description')[0].value});
                     }
+
+                    this.axios.post('/hospital/movephoto', pt)
+                        .then(response => {
+                            }).catch(error=>{
+                                console.log(error);
+                                if(error.response.status == 422){
+                                    this.errors = error.response.data.errors
+                                }
+                        })
 
                     var video = document.getElementsByClassName('gallery-area-video');
                         for(var i = 0; i< video.length; i++) {
@@ -1595,7 +1599,7 @@ export default {
                        congestion:congestion,facilities:facilities});
                         if(this.gallery_list.length > 0) {
                                 this.axios
-                                    .post(`hospital/galleryupdate/${this.cusid}`,this.gallery_list)
+                                    .post(`/hospital/galleryupdate/${this.cusid}`,this.gallery_list)
                                         .then((response) => {
                                         }).catch(error=>{
                                         if(error.response.status == 422){
@@ -1606,7 +1610,7 @@ export default {
                         }
                         if(this.customer_info_push.length > 0) {
                                 this.axios
-                                        .post(`customer/profile/${this.cusid}`,this.customer_info_push)
+                                        .post(`/customer/profile/${this.cusid}`,this.customer_info_push)
                                                 .then((response) => {
 
                                                 }).catch(error=>{
@@ -1618,7 +1622,7 @@ export default {
                         }
                         if(this.save_hospital_info.length > 0) {
                                 this.axios
-                                        .post(`hospital/profile/${this.cusid}`,this.save_hospital_info)
+                                        .post(`/hospital/profile/${this.cusid}`,this.save_hospital_info)
                                                 .then((response) => {
                                                 }).catch(error=>{
                                                 if(error.response.status == 422){
@@ -1629,7 +1633,7 @@ export default {
                         }
                         if(this.schedule_list.length > 0) {
                                 this.axios
-                                        .post(`schedule/update/${this.cusid}`,this.schedule_list)
+                                        .post(`/schedule/update/${this.cusid}`,this.schedule_list)
                                                 .then((response) => {
 
                                                 }).catch(error=>{
@@ -1642,7 +1646,7 @@ export default {
 
                         if(this.chek_feature.length > 0) {
                                 this.axios
-                                        .post(`sfeature/update/${this.cusid}`,this.chek_feature)
+                                        .post(`/sfeature/update/${this.cusid}`,this.chek_feature)
                                                 .then((response) => {
 
                                                 }).catch(error=>{
@@ -1655,7 +1659,7 @@ export default {
 
                         if(this.subjects.length > 0) {
                                 this.axios
-                                        .post(`subject_junctions/update/${this.cusid}`,this.subjects)
+                                        .post(`/subject_junctions/update/${this.cusid}`,this.subjects)
                                                 .then((response) => {
 
                                                 }).catch(error=>{
@@ -1685,7 +1689,7 @@ export default {
                 if (this.postal.length > 4) {
                     var postal = this.postal;
                     this.axios
-                        .post('hospital/postList/' + postal)
+                        .post('/hospital/postList/' + postal)
                         .then(response => {
                             var post_data = response.data;
                             var length = response.data.length;

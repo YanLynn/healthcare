@@ -69,6 +69,7 @@ import occupationlist from './components/occupationlist.vue';
 import nursingSearch from './components/nursingSearch.vue';
 import jobSearch from './components/jobSearch.vue';
 import News from './components/News.vue';
+import Unauthorized from './components/403.vue';
 
 
 
@@ -76,15 +77,12 @@ import News from './components/News.vue';
 
 // Routes
 const routes = [
-//   {
-//     path: '/',
-//     name: 'home',
-//     component: Home,
-//     meta: {
-//       auth: undefined
-//     }
-//   },
- 
+  
+{
+  path: '/Unauthorized',
+  name: 'Unauthorized',
+  component: Unauthorized,
+},
   {
     path: '/register',
     name: 'register',
@@ -116,16 +114,17 @@ const routes = [
     name: 'admin.dashboard',
     component: AdminDashboard,
     meta: {
-      auth: {roles: 2, redirect: {name: 'login'}, forbiddenRedirect: '/403'}
+      auth: {roles: 2, redirect: {name: 'login'}, forbiddenRedirect: '/Unauthorized'}
     }
   },
-
-
 
    {
         name: 'News',
         path: '/',
-        component: News
+        component: News,
+        meta: {
+          auth: undefined
+        }
     },
   
     {
@@ -162,7 +161,10 @@ const routes = [
     {
         name: "customerlist",
         path: "/customerlist",
-        component: customerlist
+        component: customerlist,
+        meta: {
+          auth: {roles: 2, redirect: {name: 'login'}, forbiddenRedirect: '/Unauthorized'}
+        }
     },
     {
         name: "customersearchlist",

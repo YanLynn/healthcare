@@ -63,7 +63,8 @@ window.events = new Vue();
 window.flash = function(message) {
     window.events.$emit('flash', message);
 }
-Vue.component('flash', require('./components/Flash.vue'));
+Vue.component('flash', require('../js/components/Flash.vue'));
+Vue.component('ads_slider', require('../js/components/ads_slider.vue'));
 Vue.use(VueClazyLoad)
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
@@ -82,7 +83,10 @@ Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api` 
 Vue.use(VueAuth, auth)
+// console.log(auth)
 // Load Index
+
+
 Vue.component('index', Index)
 
 router.beforeEach((to, from, next) => {

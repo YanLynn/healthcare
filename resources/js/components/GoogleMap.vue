@@ -168,7 +168,7 @@ export default {
                 if (this.comment.postal.length > 4) {
                     var postal = this.comment.postal;
                     this.axios
-                        .post('hospital/postList/' + postal)
+                        .post('/hospital/postList/' + postal)
                         .then(response => {
                             var post_data = response.data;
                             var length = response.data.length;

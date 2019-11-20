@@ -8,9 +8,24 @@
       <div class="col-md-12">
         <div class="row">
           <div class="info-box"></div>
-          <div class="col-md-12 col-sm-12 col-md-12 map-wrap">
-            <div class="divisions" style="margin:0 auto">
-              <div class="row " id="divisionswrap">
+          <div class="col-12 map-wrap">
+          <div class="col-lg-5 col-md-12 col-sm-12 float-left" style="padding-left: 75px;padding-top: 10px;">
+            <h2 class="map-header m-t-20">老人ホームや病院<br/>で働きたいあなた<br/>の希望叶えます。</h2>
+            <!--search input-->
+              <div class="wrap">
+                <div class="search">
+                    <input type="text" class="searchTerm" placeholder="地名、駅名、施設名などを入力（例：東京駅）">
+                    <button type="submit" class="searchButton">    
+                      <i class="fas fa-search"></i>   
+                      検索
+                  </button>
+                </div>
+              </div> 
+            <!--end search input-->          
+            </div>
+          <div class="col-lg-7 col-sm-12 col-md-12 float-left">            
+              <div class="row divisions" id="divisionswrap">
+                 <img src="/images/img_map1.png" alt="map" class="img-fluid" style="margin:0 auto;">
                 <div class="col-sm-2 hokkaido-box">
                   <div class="mb-3">                    
                     <div class="division-box">
@@ -297,11 +312,12 @@
                   </div>
                 </div>
               </div>
-            </div>
+           
             <!-- <div class="map">
               
             </div> -->
           </div>
+        </div>
 
          
           <div class="col-12 jobselect pad-free"> 
@@ -311,7 +327,7 @@
                 <tr>
                   <th>地域</th>
                   <td>
-                    <select id="selectCity"   class="col-9 form-control custom-select mt-2 mb-2" v-model="id">
+                    <select id="selectCity"   class="col-9 form-control custom-select mt-2 mb-2" v-model="id" @change="changeTownship">
                       <option v-for = "city in cities" :value="city.id" :key="city.id" >{{city.city_name}}</option>
                     </select>
                     <button @click="toggleContent4" class="btn col-3 seemore-btn">
@@ -422,7 +438,7 @@
                           </h5>
                         <div class="clearfix">
                           <p class="job_status">{{job.employment_status}}</p>
-                          <p class="job_id">求人番号{{job.jobnum}}</p>
+                          <p class="job_id"><span>求人番号:</span>{{job.jobnum}}</p>
                         </div>
                       </div>
                       <div class="job-body row  clearfix">
@@ -608,22 +624,32 @@ export default {
                 $('#close4').append('<i class="fas fa-arrow-circle-down"></i> もっと見る');
             }
         },
+        changeTownship()
+        {
+            this.axios.get('getmap',{
+            params:{
+              id: this.id,
+              township_id:-1,
+              moving_in:-1,
+              per_month:-1
+          },
+          })
+          .then((response)=>{
+
+          $('.jobselect').removeClass('jobselect');
+          this.cities = response.data.city
+          this.getCity = response.data.getCity
+          this.getTownships = response.data.getTownships
+          this.occupations = response.data.occupations
+          this.id = id
+         })
+        
+        this.search();
+        },
 
       getStateClick(e){
            
 
-          if(this.townshipID.length > 0)
-          {
-            this.townshipID = [];
-          }
-          if(this.occupationID.length > 0)
-          {
-            this.occupationID = [];
-          }
-          if(this.empstatus.length > 0)
-          {
-            this.empstatus = [];
-          }
       
           if(e.target.id == ''){
             var id = $('#selectCity').val();
@@ -632,9 +658,7 @@ export default {
           }
           this.id = id;
        
-       
-          // const id = e.target.id;
-          // this.id = id;
+      
 
           this.axios.get('getmap',{
             params:{

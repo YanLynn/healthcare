@@ -70,7 +70,7 @@ export default {
     };
   },
   created() {
-    this.axios.get("types/type").then(response => {
+    this.axios.get("/types/type").then(response => {
       this.types = response.data;
       this.norecord = this.types.length;
     });
@@ -93,7 +93,7 @@ export default {
         cancelButtonClass: "all-btn"
       }).then(response => {
         this.axios
-          .delete(`types/delete/${id}`)
+          .delete(`/types/delete/${id}`)
           .then(response => {
             this.types = response.data;
             this.norecord = this.types.length;
@@ -118,7 +118,7 @@ export default {
       var search_word = $("#search-item").val();
       let fd = new FormData();
       fd.append("search_word", search_word);
-      this.axios.post("types/search", fd).then(response => {
+      this.axios.post("/types/search", fd).then(response => {
         this.types = response.data;
       });
     }

@@ -32,11 +32,12 @@ export default {
                 swipe: true,
                 autoplay: true,
                 lazyLoad: 'ondemand',
+                
             },
         }
     },
     created() {
-    this.axios.get("advertisement/ads").then(response => {
+    this.axios.get("/advertisement/ads").then(response => {
       this.ads_list = response.data;
     });
   },

@@ -277,7 +277,7 @@
             // } else {
             //   this.comments.present = "しない";
             // }
-            this.axios.get("hospital/citiesList").then(response => {
+            this.axios.get("/hospital/citiesList").then(response => {
                 this.city_list = response.data;
                 console.log("testing", this.comments.division);
                 for (var i = 0; i < this.city_list.length; i++) {
@@ -291,7 +291,7 @@
             add() {
                     this.$loading(true);
                     this.axios
-                        .post("nurse/add", this.comments)
+                        .post("/nurse/add", this.comments)
                         .then(response => {
                             this.$loading(false);
                             //   alert("Mail Sent Successfully !");

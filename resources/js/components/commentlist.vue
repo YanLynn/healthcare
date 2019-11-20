@@ -1,13 +1,7 @@
 <template>
     <div class="row">
         <div class="col-12">
-            <div class="row m-b-10" v-if="norecord !== 0">
-                <div class="col-md-12">
-                    <router-link to="/comment" class="float-right main-bg-color create-btn all-btn">
-                        <i class="fas fa-plus-circle"></i> 新しいコメントを作成
-                    </router-link>
-                </div>
-            </div>
+            
             <!--card-->
             <div class="col-md-12 col-md-12 tab-content tab-content1 tabs pad-free border-style">
                 <div class="col-md-12 scrolldiv">
@@ -81,7 +75,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="offset-md-4 col-md-8 mt-3">
+                        <div class="offset-md-4 col-md-8 mt-3" v-if="pagination">
                             <nav aria-label="Page navigation example">
                                 <ul class="pagination">
                                     <li class="page-item">
@@ -120,15 +114,20 @@
                     size: 10,
                     pageRange: 5,
                     items: [],
+                    pagination: false,
                 }
             },
             created() {
                 this.axios
-                    .get('comments/comment')
+                    .get('/comments/comment')
                     .then(response => {
                         this.comments = response.data;
                         this.norecord = this.comments.length;
-
+                        if(this.norecord > this.size){
+                            this.pagination = true;
+                        }else{
+                            this.pagination = false;
+                        }
                     });
             },
             computed: {
@@ -185,11 +184,15 @@
                             cancelButtonClass: "all-btn"
                         }).then(response => {
                             this.axios
-                                .delete(`comments/delete/${id}`)
+                                .delete(`/comments/delete/${id}`)
                                 .then(response => {
                                     this.comments = response.data;
                                     this.norecord = this.comments.length;
-
+                                    if(this.norecord > this.size){
+                                        this.pagination = true;
+                                    }else{
+                                        this.pagination = false;
+                                    }
                                     // let i = this.categories.map(item => item.id).indexOf(id); // find index of your object
                                     // this.categories.splice(i, 1);
                                     this.$swal({
@@ -225,7 +228,7 @@
                             confirmButtonClass: "all-btn",
                             cancelButtonClass: "all-btn"
                         }).then(response => {
-                            this.axios.get(`comments/confirm/${id}`)
+                            this.axios.get(`/comments/confirm/${id}`)
                                 .then(response => {
                                     this.comments = response.data.comments;
                                     this.$swal({
@@ -259,9 +262,14 @@
                         var search_word = $("#search-item").val();
                         let fd = new FormData();
                         fd.append("search_word", search_word);
-                        this.axios.post("comments/search", fd).then(response => {
+                        this.axios.post("/comments/search", fd).then(response => {
                             this.comments = response.data;
-                        });
+                            if(this.comments.length > this.size){
+                                this.pagination = true;
+                            }else{
+                                this.pagination = false;
+                            }
+                            });
                     },
                     commentToggle(id) {
                         var class_by_id = $('#icon' + id).attr('class');
@@ -297,6 +305,7 @@
                 },
                 pageSelect(index) {
                     this.currentPage = index - 1;
+                    window.scrollTo(0,0);
                 },
             }
     }
