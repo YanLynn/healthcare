@@ -126,13 +126,20 @@
   export default {
     data() {
       return {
-
+      
       }
     },
     components: {
       HeaderMenu,
       asideMenu
-    },
+    }, 
+
+    mounted(){
+        this.axios.get('auth/user').then(res=>{
+            console.log(res)
+        })
+        }
+
    
   }
 </script>

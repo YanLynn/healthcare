@@ -71,7 +71,7 @@ import jobSearch from './components/jobSearch.vue';
 import News from './components/News.vue';
 import Unauthorized from './components/403.vue';
 
-
+import menu from './components/menu/Menu.vue';
 
 
 
@@ -83,6 +83,7 @@ const routes = [
   name: 'Unauthorized',
   component: Unauthorized,
 },
+
   {
     path: '/register',
     name: 'register',
@@ -195,7 +196,10 @@ const routes = [
     {
         name: "news_list",
         path: "/news_list",
-        component: news_list
+        component: news_list,
+        meta: {
+          auth: {roles: 2, redirect: {name: 'login'}, forbiddenRedirect: '/Unauthorized'}
+        }
     },
     {
         name: "create_news",

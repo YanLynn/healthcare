@@ -18,14 +18,10 @@ class SearchMapController extends Controller
         $per_month = $_GET['per_month'];
         $query = "SELECT '' as alphabet,n.id as nursing_id,n.id,n.latitude as lat ,n.longitude as lng, n.*,c.*,ci.city_name,t.township_name,ty.name AS type_name
                     FROM customers AS c 
-                    LEFT JOIN townships AS t 
-                    ON t.id = c.townships_id 
-                    JOIN nursing_profiles AS n 
-                    ON n.customer_id = c.id
-                    LEFT JOIN cities AS ci
-                    ON t.city_id = ci.id
-                    JOIN types AS ty
-                    ON c.type_id = ty.id
+                    LEFT JOIN townships AS t  ON t.id = c.townships_id 
+                    JOIN nursing_profiles AS n  ON n.customer_id = c.id
+                    LEFT JOIN cities AS ci ON t.city_id = ci.id
+                    JOIN types AS ty ON c.type_id = ty.id
                     WHERE";
 
         if($id != null && $township_id == -1 && $moving_in == -1 && $per_month == -1 ){

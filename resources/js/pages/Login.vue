@@ -37,8 +37,6 @@
       login() {
         // get the redirect object
         var redirect = this.$auth.redirect()
-        
-        console.log(this.$auth.login)
         var _this = this
         this.$auth.login({
           params: {
@@ -47,7 +45,7 @@
           },
           success: function() {
             // handle redirection
-            const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'home' : '/home'
+            const redirectTo = redirect ? redirect.from.name : this.$auth.user().role === 2 ? 'News' : '/'
             this.$router.push({name: redirectTo})
           },
           error: function() {

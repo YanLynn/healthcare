@@ -7,9 +7,11 @@ import VueAxios from 'vue-axios'
 import VueRouter from 'vue-router'
 import Index from './Index'
 import auth from './auth'
-import router from './router'
-import * as VueGoogleMaps from "vue2-google-maps";
 
+import router from './router'
+import Vuex from 'vuex';
+import * as VueGoogleMaps from "vue2-google-maps";
+Vue.use(Vuex);
 //start editor
 //start onepage
 import 'animate.css'
@@ -65,6 +67,8 @@ window.flash = function(message) {
 }
 Vue.component('flash', require('../js/components/Flash.vue'));
 Vue.component('ads_slider', require('../js/components/ads_slider.vue'));
+
+
 Vue.use(VueClazyLoad)
 Vue.use(VueRouter);
 Vue.use(VueAxios, axios);
@@ -83,7 +87,7 @@ Vue.use(VueRouter)
 Vue.use(VueAxios, axios)
 axios.defaults.baseURL = `${process.env.MIX_APP_URL}/api` 
 Vue.use(VueAuth, auth)
-// console.log(auth)
+
 // Load Index
 
 
@@ -101,5 +105,11 @@ router.afterEach(() => {
 const app = new Vue({
   el: '#app',
   router,
+  component:{
+    Index,
+    meta: {
+      auth: undefined
+    }
+  },
 
 });

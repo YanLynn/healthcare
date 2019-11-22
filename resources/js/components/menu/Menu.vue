@@ -19,7 +19,7 @@
               <router-link :to="{ name: 'News' }"> ニュース（ホーム）</router-link>
             </li>
             <li>
-              <router-link :to="{ name: 'nursingSearch' }">介護施設検索</router-link>
+              <router-link :to="{ name: 'nursingSearch' }"><i class="fas fa-phone-alt"></i>介護施設検索</router-link>
             </li>
             <li>
               <router-link :to="{ name: 'hospital_search' }"> 病院検索</router-link>
@@ -34,7 +34,7 @@
                 <ul class="navbar-nav ml-auto pc  d-flex justify-content-end">
                   
                   <li class="nav-item" v-if="!$auth.check()">
-                    <router-link :to="{name: 'register'}" class="nav-link pad-free">事業者 登録</router-link>
+                    <router-link :to="{name: 'register'}" class="nav-link pad-free"> <i class="fas fa-phone-alt"></i>事業者 登録</router-link>
                   </li>
                   <li class="nav-item" v-if="!$auth.check()">
                     <router-link :to="{name: 'login'}" class="nav-link pad-free">事業者 ログイン</router-link>
@@ -64,7 +64,9 @@
 <script>
   export default {
     
-    
+    computed: {
+ 
+},
 
   }
 </script>
